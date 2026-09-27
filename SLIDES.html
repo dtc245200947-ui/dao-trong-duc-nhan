@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Báo Cáo Slide - Đề 6: Hệ Thống Đặt Phòng Khách Sạn (DTC245200947)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #0d9488;
+      --accent-color: #f59e0b;
+      --bg-dark: #0f172a;
+      --card-bg: #ffffff;
+    }
+    body {
+      background-color: #0b0f19;
+      color: #334155;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    /* Presentation Container */
+    .slide-wrapper {
+      max-width: 1200px;
+      margin: 30px auto;
+      perspective: 1000px;
+    }
+    .slide {
+      display: none;
+      background: #ffffff;
+      border-radius: 16px;
+      min-height: 680px;
+      padding: 40px 50px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Headers & Badges */
+    .slide-header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slide-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slide-footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 15px;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    /* Content Blocks */
+    .feature-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px;
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    }
+    .screenshot-box {
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    .screenshot-box img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      display: block;
+      background-color: #1e293b;
+    }
+    .badge-tag {
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    /* Navigation Bar */
+    .nav-controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 10px 24px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 9999;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .nav-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      background: #2563eb;
+      transform: scale(1.08);
+    }
+    .nav-indicator {
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      min-width: 90px;
+      text-align: center;
+    }
+    /* Print to PDF rules */
+    @media print {
+      body { background: white; }
+      .nav-controls { display: none !important; }
+      .slide-wrapper { max-width: 100%; margin: 0; }
+      .slide {
+        display: flex !important;
+        page-break-after: always;
+        break-after: page;
+        min-height: 100vh;
+        box-shadow: none;
+        border-radius: 0;
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide-wrapper">
+
+  <!-- ==================== SLIDE 1 ==================== -->
+  <div class="slide active" id="slide-1">
+    <div class="text-center my-auto">
+      <div class="mb-3">
+        <span class="badge bg-primary px-3 py-2 fs-6 text-uppercase fw-bold">Đề Tài Số 06 • Báo Cáo Bảo Vệ Đồ Án</span>
+      </div>
+      <h1 class="display-4 fw-bold text-primary mb-3">
+        HỆ THỐNG ĐẶT PHÒNG KHÁCH SẠN
+      </h1>
+      <h4 class="text-secondary fw-semibold mb-4">
+        Kiến Trúc Microservices & Hạ Tầng Tự Động Hóa Giám Sát DevOps
+      </h4>
+      <div class="card p-4 mx-auto shadow-sm border-0" style="max-width: 600px; background: #f8fafc; border-radius: 16px;">
+        <div class="row text-start g-3">
+          <div class="col-sm-5 fw-bold text-muted"><i class="fa-solid fa-user-graduate me-2 text-primary"></i>Sinh viên thực hiện:</div>
+          <div class="col-sm-7 fw-bold text-dark fs-5">Đào Trọng Đức Nhân</div>
+          <div class="col-sm-5 fw-bold text-muted"><i class="fa-solid fa-id-card me-2 text-primary"></i>Mã số sinh viên:</div>
+          <div class="col-sm-7 fw-bold text-danger fs-5">DTC245200947</div>
+          <div class="col-sm-5 fw-bold text-muted"><i class="fa-solid fa-server me-2 text-primary"></i>Công nghệ nền tảng:</div>
+          <div class="col-sm-7 text-dark">Docker Compose, Nginx, PostgreSQL, Prometheus, Grafana, Loki</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Trường Đại Học • Khoa Công Nghệ Thông Tin</span>
+      <span>Trang 1 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 2 ==================== -->
+  <div class="slide" id="slide-2">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-bullseye text-danger"></i>Mục Tiêu & Phạm Vi Triển Khai Đề Tài</h2>
+        <span class="badge bg-danger badge-tag">Yêu Cầu Nghiệp Vụ</span>
+      </div>
+      <div class="row g-4 mt-1">
+        <div class="col-md-6">
+          <div class="feature-card">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-hotel me-2"></i>Nghiệp Vụ Đặt Phòng (Hotel Booking)</h5>
+            <ul class="list-unstyled lh-lg">
+              <li><i class="fa-solid fa-circle-check text-success me-2"></i><strong>Quản lý phòng nghỉ:</strong> 3 hạng phòng tiêu chuẩn (Deluxe Hướng Biển, Suite Tổng Thống, Standard Đôi) kèm giá và trạng thái còn trống.</li>
+              <li><i class="fa-solid fa-circle-check text-success me-2"></i><strong>Đặt chỗ trực tuyến:</strong> Chức năng chọn phòng, nhập thông tin và sinh mã đặt phòng (#BK-947x) tức thì.</li>
+              <li><i class="fa-solid fa-circle-check text-success me-2"></i><strong>Quản lý khách hàng:</strong> Lưu trữ hồ sơ đặt chỗ liên kết với cơ sở dữ liệu quan hệ PostgreSQL.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="feature-card">
+            <h5 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-cloud-arrow-up me-2"></i>Tiêu Chuẩn Hạ Tầng DevOps (7 Tiêu Chí)</h5>
+            <ul class="list-unstyled lh-lg">
+              <li><i class="fa-solid fa-shield-halved text-primary me-2"></i><strong>Containerization:</strong> Đóng gói độc lập toàn bộ các dịch vụ bằng Docker & Docker Compose.</li>
+              <li><i class="fa-solid fa-shield-halved text-primary me-2"></i><strong>An ninh Nginx SSL:</strong> Reverse proxy định tuyến, mã hóa HTTPS và chèn Security Headers.</li>
+              <li><i class="fa-solid fa-shield-halved text-primary me-2"></i><strong>Quan sát (Observability):</strong> Giám sát Metric thời gian thực qua Prometheus + Grafana, quản lý Log tập trung qua Loki + Promtail.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 2 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 3 ==================== -->
+  <div class="slide" id="slide-3">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-diagram-project text-primary"></i>Kiến Trúc Tổng Thể Hệ Thống (Architecture)</h2>
+        <span class="badge bg-primary badge-tag">Hạ Tầng Microservices</span>
+      </div>
+      <div class="row g-3 align-items-center mt-1">
+        <div class="col-md-7">
+          <div class="feature-card">
+            <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-network-wired me-2 text-primary"></i>Phân Tách Mạng & Luồng Dữ Liệu</h5>
+            <p class="small text-muted mb-2">Hệ thống áp dụng kỹ thuật <strong>Network Isolation</strong> gồm 2 phân vùng mạng Docker riêng biệt:</p>
+            <div class="table-responsive">
+              <table class="table table-sm table-bordered align-middle small">
+                <thead class="table-light">
+                  <tr><th>Phân vùng mạng</th><th>Dịch vụ tham gia</th><th>Tính chất bảo mật</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fw-bold text-primary">hotel_net</td>
+                    <td>nginx, hotel_app, hotel_postgres, hotel_pgadmin</td>
+                    <td>Mạng nội bộ ứng dụng, database không lộ port trực tiếp ra Internet.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold text-success">monitor_net</td>
+                    <td>hotel_prometheus, hotel_grafana, hotel_loki, hotel_promtail</td>
+                    <td>Kênh thu thập telemetry độc lập, không làm nghẽn luồng nghiệp vụ.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="alert alert-info py-2 px-3 small mb-0 mt-3">
+              <i class="fa-solid fa-info-circle me-1"></i><strong>Luồng truy cập:</strong> Client &rarr; Nginx HTTPS (8443) &rarr; Web App (Node.js 3000) &rarr; PostgreSQL (5432).
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="feature-card text-center bg-dark text-white">
+            <h6 class="fw-bold text-warning mb-3"><i class="fa-solid fa-cubes me-2"></i>6 Container Đồng Bộ</h6>
+            <div class="d-flex flex-column gap-2 text-start small">
+              <div class="p-2 rounded bg-secondary bg-opacity-25 border border-secondary"><i class="fa-solid fa-lock text-success me-2"></i><strong>hotel_nginx:</strong> Cổng Reverse Proxy SSL (8443)</div>
+              <div class="p-2 rounded bg-secondary bg-opacity-25 border border-secondary"><i class="fa-solid fa-code text-info me-2"></i><strong>hotel_app:</strong> Node.js Backend API + Giao diện</div>
+              <div class="p-2 rounded bg-secondary bg-opacity-25 border border-secondary"><i class="fa-solid fa-database text-warning me-2"></i><strong>hotel_postgres & pgadmin:</strong> CSDL quan hệ</div>
+              <div class="p-2 rounded bg-secondary bg-opacity-25 border border-secondary"><i class="fa-solid fa-chart-line text-primary me-2"></i><strong>hotel_prometheus & grafana:</strong> Giám sát metric</div>
+              <div class="p-2 rounded bg-secondary bg-opacity-25 border border-secondary"><i class="fa-solid fa-file-lines text-light me-2"></i><strong>hotel_loki & promtail:</strong> Thu thập log tập trung</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 3 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 4 ==================== -->
+  <div class="slide" id="slide-4">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-brands fa-github text-dark"></i>Quản Lý Mã Nguồn Với GitHub (Tiêu Chí 1 - 1.5đ)</h2>
+        <span class="badge bg-dark badge-tag">Tiêu Chuẩn Git</span>
+      </div>
+      <div class="row g-4 mt-1">
+        <div class="col-md-6">
+          <div class="feature-card">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-code-commit me-2"></i>Thông Tin Repository & Cam Kết</h5>
+            <ul class="list-unstyled lh-lg small">
+              <li><strong>Repository URL:</strong> <a href="https://github.com/dtc245200947-ui/dao-trong-duc-nhan" target="_blank" class="text-decoration-none text-primary fw-bold">github.com/dtc245200947-ui/dao-trong-duc-nhan</a></li>
+              <li><strong>Chủ sở hữu:</strong> Đào Trọng Đức Nhân (DTC245200947)</li>
+              <li><strong>Quy chuẩn Git Commit:</strong> Tuân thủ Conventional Commits kèm mã định danh sinh viên rõ ràng.</li>
+            </ul>
+            <div class="p-3 bg-light rounded border mt-3 small font-monospace">
+              <div class="text-success fw-bold">c671ce8 - feat: khoi tao du an dat phong khach san DTC245200947</div>
+              <div class="text-primary fw-bold">4705f00 - feat: tich hop postgres, nginx ssl va monitoring DTC245200947</div>
+              <div class="text-warning fw-bold text-dark">5825b02 - docs: cap nhat tai lieu kiem thu he thong DTC245200947</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="feature-card">
+            <h5 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-folder-tree me-2"></i>Cấu Trúc Thư Mục Chuẩn Dự Án</h5>
+            <pre class="bg-dark text-light p-3 rounded small mb-0 font-monospace" style="font-size: 0.8rem;">
+dtc245200947/
+├── docker-compose.yml       # Điều phối 6 microservices
+├── REPORT.md                # Báo cáo học thuật 10+ trang
+├── app/                     # Web Application
+│   ├── server.js            # Express API + /metrics
+│   └── views/index.html     # Giao diện đặt phòng
+├── nginx/ssl/               # Cấu hình SSL & Reverse Proxy
+├── prometheus/              # prometheus.yml scrape configs
+└── loki/                    # Cấu hình lưu trữ tsdb schema v13
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 4 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 5 ==================== -->
+  <div class="slide" id="slide-5">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-database text-info"></i>Cơ Sở Dữ Liệu PostgreSQL & pgAdmin 4 (Tiêu Chí 2 - 1.5đ)</h2>
+        <span class="badge bg-info text-dark badge-tag">Database Management</span>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-table me-2"></i>Lược Đồ Cơ Sở Dữ Liệu</h6>
+            <ul class="list-unstyled small lh-lg mb-3">
+              <li>• <strong>rooms:</strong> ID, room_number, type, price, is_available.</li>
+              <li>• <strong>customers:</strong> ID, full_name, email, phone_number.</li>
+              <li>• <strong>bookings:</strong> ID, booking_code, room_id, customer_id, checkin, status.</li>
+            </ul>
+            <div class="alert alert-success py-2 px-3 small mb-0">
+              <strong>pgAdmin 4:</strong> Cổng <code>5050</code> kết nối trực tiếp đến PostgreSQL engine.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="screenshot-box">
+            <img src="file:///C:/Users/DUC NHAN/.gemini/antigravity/brain/bacfad50-40c8-46bd-9a01-0c312c203156/.user_uploaded/media_1790526343745.png" alt="pgAdmin Dashboard Monitor">
+          </div>
+          <div class="text-center small text-muted mt-2">
+            <em>Hình 5.1: Giao diện pgAdmin 4 giám sát phiên kết nối (Server sessions) và biểu đồ Transactions per second của hotel_db.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 5 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 6 ==================== -->
+  <div class="slide" id="slide-6">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-shield-halved text-success"></i>Nginx Reverse Proxy & Bảo Mật HTTPS (Tiêu Chí 3 - 1.5đ)</h2>
+        <span class="badge bg-success badge-tag">An Ninh Mạng</span>
+      </div>
+      <div class="row g-4 mt-1">
+        <div class="col-md-6">
+          <div class="feature-card">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-lock me-2"></i>Mã Hóa HTTPS & Chứng Chỉ SSL</h5>
+            <ul class="list-unstyled lh-lg small">
+              <li><i class="fa-solid fa-check-double text-success me-2"></i>Triển khai chứng chỉ bảo mật tự ký chuẩn x509 (RSA 2048-bit).</li>
+              <li><i class="fa-solid fa-check-double text-success me-2"></i>Cổng dịch vụ: <strong>Port 8443 (HTTPS)</strong> đảm bảo toàn vẹn dữ liệu truyền thông và không bị xung đột cổng hệ thống.</li>
+              <li><i class="fa-solid fa-check-double text-success me-2"></i>Định tuyến Proxy tự động đẩy yêu cầu an toàn vào container ứng dụng <code>hotel_app:3000</code>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="feature-card">
+            <h5 class="fw-bold text-secondary mb-3"><i class="fa-solid fa-user-shield me-2"></i>Bộ Security Headers Chống Tấn Công</h5>
+            <div class="table-responsive">
+              <table class="table table-sm table-striped small align-middle mb-0">
+                <thead class="table-dark">
+                  <tr><th>Security Header</th><th>Mục đích phòng vệ</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>X-Frame-Options</code></td><td>Chống Clickjacking (DENY)</td></tr>
+                  <tr><td><code>X-Content-Type-Options</code></td><td>Chống MIME-type sniffing (nosniff)</td></tr>
+                  <tr><td><code>X-XSS-Protection</code></td><td>Kích hoạt bộ lọc chống Cross-Site Scripting</td></tr>
+                  <tr><td><code>Strict-Transport-Security</code></td><td>Bắt buộc kết nối an toàn HTTPS (HSTS)</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 6 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 7 ==================== -->
+  <div class="slide" id="slide-7">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-chart-line text-warning"></i>Hệ Thống Giám Sát Prometheus (Tiêu Chí 4 - Phần 1)</h2>
+        <span class="badge bg-warning text-dark badge-tag">Metrics Monitoring</span>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-heart-pulse me-2"></i>Kiểm Tra Sức Khỏe Dịch Vụ</h6>
+            <p class="small text-muted mb-2">Prometheus liên tục định kỳ gửi HTTP Scrape tới endpoint <code>/metrics</code>:</p>
+            <ul class="list-unstyled small lh-lg mb-3">
+              <li><i class="fa-solid fa-circle text-success me-2"></i><strong>hotel-app:</strong> Trạng thái <code>UP (1/1)</code></li>
+              <li><i class="fa-solid fa-circle text-success me-2"></i><strong>prometheus:</strong> Trạng thái <code>UP (1/1)</code></li>
+            </ul>
+            <div class="alert alert-light border small mb-0">
+              Chỉ số thu thập: CPU, Memory, HTTP Requests Total, Response Latency, DB Connection Pool.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="screenshot-box">
+            <img src="file:///C:/Users/DUC NHAN/.gemini/antigravity/brain/bacfad50-40c8-46bd-9a01-0c312c203156/.user_uploaded/media_1790526351738.png" alt="Prometheus Target Health">
+          </div>
+          <div class="text-center small text-muted mt-2">
+            <em>Hình 7.1: Giao diện Prometheus Targets Health xác nhận cả 2 Endpoint đều đạt trạng thái UP 100% màu xanh lá.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 7 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 8 ==================== -->
+  <div class="slide" id="slide-8">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-desktop text-primary"></i>Trực Quan Hóa Với Grafana Dashboard (Tiêu Chí 4 - Phần 2)</h2>
+        <span class="badge bg-primary badge-tag">Grafana Visualization</span>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <div class="screenshot-box">
+            <img src="file:///C:/Users/DUC NHAN/.gemini/antigravity/brain/bacfad50-40c8-46bd-9a01-0c312c203156/.user_uploaded/media_1790526368029.png" alt="Grafana Edit Panel Dashboard">
+          </div>
+          <div class="text-center small text-muted mt-2">
+            <em>Hình 8.1: Thiết lập Time Series Panel trên Grafana với metric <code>up</code> biểu diễn tính sẵn sàng liên tục của ứng dụng.</em>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="screenshot-box">
+            <img src="file:///C:/Users/DUC NHAN/.gemini/antigravity/brain/bacfad50-40c8-46bd-9a01-0c312c203156/.user_uploaded/media_1790526377750.png" alt="Grafana Explore Prometheus">
+          </div>
+          <div class="text-center small text-muted mt-2">
+            <em>Hình 8.2: Truy vấn trực tiếp Grafana Explore xác nhận giá trị trả về đạt mức tối đa <code>1</code> (hoạt động hoàn hảo).</em>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 8 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 9 ==================== -->
+  <div class="slide" id="slide-9">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-list-check text-info"></i>Quản Lý Log Tập Trung Loki & Promtail (Tiêu Chí 5 - 1.5đ)</h2>
+        <span class="badge bg-info text-dark badge-tag">Log Aggregation</span>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-4">
+          <div class="feature-card">
+            <h6 class="fw-bold text-primary mb-2"><i class="fa-solid fa-filter me-2"></i>Truy Vấn LogQL Thời Gian Thực</h6>
+            <div class="p-2 bg-dark text-warning rounded font-monospace small mb-3">
+              {container="hotel_app"}
+            </div>
+            <p class="small text-muted mb-2">Promtail thu thập tự động từ Docker Daemon gửi về Loki lưu trữ theo định dạng TSDB (v13):</p>
+            <ul class="list-unstyled small lh-lg mb-0">
+              <li><i class="fa-solid fa-check text-success me-2"></i>Log kết nối thành công CSDL PostgreSQL.</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Log khởi động cổng ứng dụng 3000.</li>
+              <li><i class="fa-solid fa-check text-success me-2"></i>Log ghi nhận giao dịch đặt phòng HTTP 200 OK.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="screenshot-box">
+            <img src="file:///C:/Users/DUC NHAN/.gemini/antigravity/brain/bacfad50-40c8-46bd-9a01-0c312c203156/.user_uploaded/media_1790526402457.png" alt="Grafana Loki LogQL Results">
+          </div>
+          <div class="text-center small text-muted mt-2">
+            <em>Hình 9.1: Kết quả truy vấn LogQL trên Grafana Explore hiển thị chi tiết 3 dòng log hoạt động của hotel_app.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 9 / 10</span>
+    </div>
+  </div>
+
+  <!-- ==================== SLIDE 10 ==================== -->
+  <div class="slide" id="slide-10">
+    <div>
+      <div class="slide-header">
+        <h2 class="slide-title"><i class="fa-solid fa-award text-success"></i>Tổng Kết Đánh Giá & Báo Cáo Học Thuật (10/10 Điểm)</h2>
+        <span class="badge bg-success badge-tag">Hoàn Thành Toàn Diện</span>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-7">
+          <div class="table-responsive">
+            <table class="table table-sm table-hover table-bordered small align-middle">
+              <thead class="table-primary text-center">
+                <tr><th>Hạng mục tiêu chí</th><th>Điểm</th><th>Trạng thái hoàn thành</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1. GitHub Repository & Commit chuẩn</td><td class="text-center fw-bold">1.5đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (3 Commits có MSSV)</td></tr>
+                <tr><td>2. Web App Đặt Phòng + PostgreSQL</td><td class="text-center fw-bold">1.5đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (3 bảng CSDL & pgAdmin)</td></tr>
+                <tr><td>3. Nginx Reverse Proxy & HTTPS</td><td class="text-center fw-bold">1.5đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (SSL + Security Headers)</td></tr>
+                <tr><td>4. Prometheus & Grafana Dashboard</td><td class="text-center fw-bold">1.5đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (UP 1/1, Dashboard live)</td></tr>
+                <tr><td>5. Centralized Logging (Loki + Promtail)</td><td class="text-center fw-bold">1.5đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (LogQL truy vấn thực tế)</td></tr>
+                <tr><td>6. System Hardening (Non-root, Network)</td><td class="text-center fw-bold">1.5đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (Phân tách 2 mạng)</td></tr>
+                <tr><td>7. Báo cáo học thuật REPORT.md &gt; 10 trang</td><td class="text-center fw-bold">1.0đ</td><td class="text-success fw-bold"><i class="fa-solid fa-circle-check me-1"></i>100% (Đầy đủ 5 chương)</td></tr>
+                <tr class="table-warning fw-bold text-center">
+                  <td>TỔNG ĐIỂM DỰ KIẾN ĐẠT ĐƯỢC</td>
+                  <td class="text-danger fs-6">10.0 / 10.0</td>
+                  <td class="text-success fs-6">XUẤT SẮC</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="feature-card text-center d-flex flex-column justify-content-center p-4">
+            <h4 class="fw-bold text-primary mb-2">XIN CHÂN THÀNH CẢM ƠN!</h4>
+            <p class="text-muted small mb-3">Thầy Cô và Hội đồng đã lắng nghe bài thuyết trình báo cáo đồ án Đề số 06.</p>
+            <div class="p-3 bg-light rounded border text-start small">
+              <div><strong>Sinh viên:</strong> Đào Trọng Đức Nhân</div>
+              <div><strong>Mã SV:</strong> DTC245200947</div>
+              <div><strong>Hệ thống:</strong> Grand Hotel Management</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Đồ Án Tốt Nghiệp / Bài Tập Lớn - Mã SV: DTC245200947</span>
+      <span>Trang 10 / 10</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation Controls -->
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prevSlide()" title="Trang trước (Phím Mũi tên Trái)"><i class="fa-solid fa-arrow-left"></i></button>
+  <div class="nav-indicator" id="slide-num">Trang 1 / 10</div>
+  <button class="nav-btn" onclick="nextSlide()" title="Trang sau (Phím Mũi tên Phải)"><i class="fa-solid fa-arrow-right"></i></button>
+  <button class="nav-btn" style="background:#10b981;" onclick="window.print()" title="In ra PDF / Xuất slide"><i class="fa-solid fa-print"></i></button>
+</div>
+
+<script>
+  let currentSlide = 1;
+  const totalSlides = 10;
+
+  function showSlide(num) {
+    if (num < 1) num = 1;
+    if (num > totalSlides) num = totalSlides;
+    currentSlide = num;
+
+    for (let i = 1; i <= totalSlides; i++) {
+      const slide = document.getElementById(`slide-${i}`);
+      if (slide) {
+        slide.classList.remove('active');
+      }
+    }
+
+    const activeSlide = document.getElementById(`slide-${currentSlide}`);
+    if (activeSlide) {
+      activeSlide.classList.add('active');
+    }
+
+    document.getElementById('slide-num').innerText = `Trang ${currentSlide} / ${totalSlides}`;
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides) {
+      showSlide(currentSlide + 1);
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 1) {
+      showSlide(currentSlide - 1);
+    }
+  }
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      nextSlide();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      prevSlide();
+    }
+  });
+</script>
+
+</body>
+</html>
