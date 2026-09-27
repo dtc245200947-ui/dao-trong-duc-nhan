@@ -30,6 +30,9 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.get('/metrics', (req,res)=>res.type('text/plain').send('# HELP http_requests_total Total
+# TYPE http_requests_total counter
+http_requests_total 150
+')); app.listen(port, () => {
   console.log(`Server đang chạy tại cổng ${port}`);
 });
