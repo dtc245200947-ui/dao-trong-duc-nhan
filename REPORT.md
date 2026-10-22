@@ -234,3 +234,4 @@ Trong Grafana -> Explore (chọn Datasource **Loki**):
 - Tích hợp thêm các bộ cảnh báo (Alertmanager) gửi thông báo qua Telegram / Slack khi container gặp sự cố hoặc CPU vượt ngưỡng.
 - Nâng cấp hệ thống chứng chỉ số Let's Encrypt tự động cấp phát khi đưa ứng dụng lên tên miền chính thức trên Internet.
 - Triển khai mô hình cụm Kubernetes (K8s) cho phép tự động co giãn tải (Auto-scaling).
+
