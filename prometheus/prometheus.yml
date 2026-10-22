@@ -7,5 +7,6 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   - job_name: 'hotel-app'
+    metrics_path: '/metrics'
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['app:3000']

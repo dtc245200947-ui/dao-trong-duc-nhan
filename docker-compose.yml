@@ -72,6 +72,12 @@ services:
     image: grafana/grafana:latest
     container_name: hotel_grafana
     restart: always
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
     ports:
       - "3000:3000"
     networks:
@@ -95,6 +101,7 @@ services:
     restart: always
     volumes:
       - ./promtail/promtail-config.yml:/etc/promtail/promtail-config.yaml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
     networks:
       - hotel-net

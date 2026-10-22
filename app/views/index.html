@@ -1,119 +1,2365 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Grand Hotel - Đặt Phòng (DTC245200947)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPERIAL LUXURY HOTELS • Nền Tảng Đặt Phòng Toàn Quốc</title>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- File CSS đã tách riêng -->
+  <link rel="stylesheet" href="./styles.css">
   <style>
-    body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, sans-serif; }
-    .hero-banner { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 40px 0; margin-bottom: 30px; }
-    .room-card { transition: transform 0.2s; border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .room-card:hover { transform: translateY(-5px); }
+    /* Xóa hẳn dòng chữ nhỏ mô tả & nút Tất Cả 34 Tỉnh Thành */
+    #destCountLabel,
+    #btnRegion_ALL,
+    #filterLocationText,
+    #flightFilterLabel,
+    #btnToggleAllProvincesHotels {
+      display: none !important;
+    }
+    /* Khi chưa đăng nhập (ngoài giao diện): ẩn sạch giá tiền & nút Đặt Phòng / Đặt Vé; đăng nhập vào mới hiện */
+    body.auth-locked-mode #hotels .card-item .mt-auto,
+    body.auth-locked-mode #flights .card-item .mt-auto,
+    body.auth-locked-mode #hotels .btn-glow-gold,
+    body.auth-locked-mode #flights .card-item button,
+    body.auth-locked-mode .promo-banner button {
+      display: none !important;
+    }
   </style>
 </head>
-<body>
+<body class="auth-locked-mode">
 
-<div class="hero-banner text-center">
-  <div class="container">
-    <h1 class="fw-bold"><i class="fa-solid fa-hotel me-2"></i>Grand Hotel Booking System</h1>
-    <p class="lead mb-1">Hệ Thống Đặt Phòng Khách Sạn Trực Tuyến - Đề số 6</p>
-    <span class="badge bg-warning text-dark px-3 py-2 fs-6">Sinh viên: DTC245200947</span>
-  </div>
-</div>
-
-<div class="container mb-5">
-  <h3 class="fw-bold text-dark mb-4"><i class="fa-solid fa-bed me-2 text-primary"></i>Danh sách phòng hiện có</h3>
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card room-card h-100">
-        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500&auto=format&fit=crop" class="card-img-top" style="height: 200px; object-fit: cover;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between mb-2">
-            <h5 class="fw-bold mb-0">Phòng Deluxe Hướng Biển</h5>
-            <span class="badge bg-success">Còn trống</span>
-          </div>
-          <p class="text-muted small">Phòng tiêu chuẩn 5 sao với ban công nhìn ra biển, giường King-size.</p>
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <span class="fs-5 fw-bold text-danger">1.200.000 ₫/đêm</span>
-            <button class="btn btn-primary btn-sm" onclick="alert('Đặt phòng thành công! Dữ liệu đã lưu vào PostgreSQL.')">Đặt ngay</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card room-card h-100">
-        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&auto=format&fit=crop" class="card-img-top" style="height: 200px; object-fit: cover;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between mb-2">
-            <h5 class="fw-bold mb-0">Phòng Suite Tổng Thống</h5>
-            <span class="badge bg-success">Còn trống</span>
-          </div>
-          <p class="text-muted small">Không gian sang trọng 80m² với phòng khách riêng, bồn tắm sục jacuzzi.</p>
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <span class="fs-5 fw-bold text-danger">2.500.000 ₫/đêm</span>
-            <button class="btn btn-primary btn-sm" onclick="alert('Đặt phòng thành công! Dữ liệu đã lưu vào PostgreSQL.')">Đặt ngay</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card room-card h-100">
-        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500&auto=format&fit=crop" class="card-img-top" style="height: 200px; object-fit: cover;">
-        <div class="card-body">
-          <div class="d-flex justify-content-between mb-2">
-            <h5 class="fw-bold mb-0">Phòng Standard Đôi</h5>
-            <span class="badge bg-success">Còn trống</span>
-          </div>
-          <p class="text-muted small">Phòng tiện nghi, ấm cúng dành cho 2 người, đầy đủ máy lạnh, tivi 4K.</p>
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <span class="fs-5 fw-bold text-danger">750.000 ₫/đêm</span>
-            <button class="btn btn-primary btn-sm" onclick="alert('Đặt phòng thành công! Dữ liệu đã lưu vào PostgreSQL.')">Đặt ngay</button>
-          </div>
-        </div>
+  <!-- TOAST THÔNG BÁO TỰ ĐỘNG KHÔNG LỖI ALERT -->
+  <div id="toastNotification" class="toast-custom">
+    <div class="d-flex align-items-center gap-3">
+      <i id="toastIcon" class="fa-solid fa-circle-check text-success fs-4"></i>
+      <div>
+        <h6 id="toastTitle" class="fw-bold mb-0 text-white">Thông báo</h6>
+        <p id="toastMessage" class="small mb-0 text-muted">Nội dung thông báo</p>
       </div>
     </div>
   </div>
 
-  <div class="card shadow-sm mt-5 border-0">
-    <div class="card-header bg-white py-3">
-      <h5 class="fw-bold mb-0 text-primary"><i class="fa-solid fa-list-check me-2"></i>Lịch sử đặt phòng khách sạn (Database PostgreSQL)</h5>
+  <!-- NAVBAR CHÍNH TRỰC DIỆN SẠCH ĐẸP -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-main">
+    <div class="container">
+      <a class="brand-logo" href="#">
+        <i class="fa-solid fa-hotel text-warning"></i>
+        <div>IMPERIAL <span>HOTELS</span></div>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav mx-auto align-items-center gap-2">
+          <li class="nav-item"><a class="nav-link nav-link-custom active" href="#destinations-explore"><i class="fa-solid fa-map-location-dot me-1 text-danger"></i> Điểm Đến</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#hotels"><i class="fa-solid fa-bed me-1 text-warning"></i> Phòng Khách Sạn</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#flights"><i class="fa-solid fa-plane-departure me-1 text-primary"></i> Vé Máy Bay 3 Miền</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#amenities"><i class="fa-solid fa-bell-concierge me-1 text-info"></i> Tiện Ích 5 Sao</a></li>
+          <li class="nav-item"><a class="nav-link nav-link-custom" href="#reviews"><i class="fa-solid fa-star me-1 text-success"></i> Đánh Giá</a></li>
+          <li class="nav-item d-none" id="navAdminLink"><a class="nav-link nav-link-custom text-warning fw-bold" href="#booking-manager"><i class="fa-solid fa-user-shield me-1"></i> Quản Trị Hệ Thống</a></li>
+        </ul>
+
+        <!-- CỤM AUTH ĐĂNG NHẬP / ĐĂNG KÝ (KHÁCH HÀNG) -->
+        <div class="d-flex align-items-center gap-2" id="authSection">
+          <button class="btn btn-auth-login" onclick="openLoginModal()">
+            <i class="fa-solid fa-arrow-right-to-bracket me-1"></i> Đăng nhập
+          </button>
+          <button class="btn btn-auth-register" onclick="openRegisterModal()">
+            <i class="fa-solid fa-user-plus me-1"></i> Đăng ký
+          </button>
+        </div>
+
+        <!-- CỤM TÀI KHOẢN KHI ĐÃ ĐĂNG NHẬP -->
+        <div class="d-none align-items-center gap-2" id="userProfileSection">
+          <div class="d-flex align-items-center gap-2 bg-dark px-3 py-1 rounded-pill border border-warning" style="cursor: pointer;">
+            <img id="navUserAvatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80" class="rounded-circle" width="32" height="32" alt="Avatar">
+            <span id="currentUserName" class="fw-bold text-warning small">Khách hàng VIP</span>
+            <span class="badge px-2 py-0" style="font-size: 0.65rem;" id="navUserRole">VIP</span>
+          </div>
+          <button class="btn btn-sm btn-outline-danger" onclick="logoutUser()" title="Đăng xuất">
+            <i class="fa-solid fa-power-off"></i>
+          </button>
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      <table class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>Mã đặt</th>
-            <th>Tên khách hàng</th>
-            <th>Loại phòng</th>
-            <th>Ngày nhận phòng</th>
-            <th>Trạng thái</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>#BK-9471</strong></td>
-            <td>Nguyễn Văn A</td>
-            <td>Phòng Deluxe Hướng Biển</td>
-            <td>2026-09-28</td>
-            <td><span class="badge bg-success">Đã xác nhận</span></td>
-          </tr>
-          <tr>
-            <td><strong>#BK-9472</strong></td>
-            <td>Trần Thị B</td>
-            <td>Phòng Suite Tổng Thống</td>
-            <td>2026-10-01</td>
-            <td><span class="badge bg-warning text-dark">Chờ thanh toán</span></td>
-          </tr>
-        </tbody>
-      </table>
+  </nav>
+
+  <!-- ==================== ĐIỂM ĐẾN QUẢNG BÁ TOÀN QUỐC ==================== -->
+  <section class="py-5" id="destinations-explore">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+        <div>
+          <span class="text-warning fw-bold small text-uppercase"><i class="fa-solid fa-compass me-1"></i> Hệ Thống Khách Sạn Việt Nam</span>
+          <h2 class="display-6 fw-bold text-white mb-0">KHÁM PHÁ ĐIỂM ĐẾN TOÀN QUỐC</h2>
+        </div>
+
+        <!-- BỘ LỌC VÙNG MIỀN & TÌM NHANH TỈNH THÀNH -->
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+          <div class="input-group input-group-sm" style="width: 230px;">
+            <span class="input-group-text bg-light border-secondary text-warning"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <input type="text" id="searchProvinceInput" class="form-control form-dark" placeholder="Tìm tỉnh thành (VD: Huế...)" oninput="renderDestinationsGrid(currentDestRegion)">
+          </div>
+          <div class="btn-group" role="group">
+            <button type="button" class="btn filter-btn-gold active" id="btnRegion_TOP" onclick="renderDestinationsGrid('TOP')">🔥 Nổi Bật (12)</button>
+            <button type="button" class="btn filter-btn-dark" id="btnRegion_BAC" onclick="renderDestinationsGrid('Miền Bắc')">Miền Bắc (12)</button>
+            <button type="button" class="btn filter-btn-dark" id="btnRegion_TRUNG" onclick="renderDestinationsGrid('Miền Trung')">Miền Trung (11)</button>
+            <button type="button" class="btn filter-btn-dark" id="btnRegion_NAM" onclick="renderDestinationsGrid('Miền Nam')">Miền Nam (11)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 destination-scroll-row" id="destinationsGridContainer">
+        <!-- 1. Đà Nẵng -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Trung" data-top="true" onclick="quickSelectCity('Đà Nẵng')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&q=80" alt="Đà Nẵng">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Đà Nẵng</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Trung</span>
+              </div>
+              <small class="text-warning">25+ Khách sạn 5 sao biển Mỹ Khê</small>
+            </div>
+          </div>
+        </div>
+        <!-- 2. Hà Nội -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Bắc" data-top="true" onclick="quickSelectCity('Hà Nội')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80" alt="Hà Nội">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Hà Nội</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Bắc</span>
+              </div>
+              <small class="text-warning">28+ Khách sạn Phố Cổ & Hồ Gươm</small>
+            </div>
+          </div>
+        </div>
+        <!-- 3. TP. Hồ Chí Minh -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Nam" data-top="true" onclick="quickSelectCity('TP. Hồ Chí Minh')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=800&q=80" alt="TP. Hồ Chí Minh">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">TP. Hồ Chí Minh</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Nam</span>
+              </div>
+              <small class="text-warning">32+ Khách sạn 5 sao Quận 1 & Landmark</small>
+            </div>
+          </div>
+        </div>
+        <!-- 4. Phú Quốc -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Nam" data-top="true" onclick="quickSelectCity('Phú Quốc')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" alt="Phú Quốc">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Kiên Giang (Phú Quốc)</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Nam</span>
+              </div>
+              <small class="text-warning">24+ Villa & Resort Đảo Ngọc Phú Quốc</small>
+            </div>
+          </div>
+        </div>
+        <!-- 5. Nha Trang -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Trung" data-top="true" onclick="quickSelectCity('Nha Trang')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Nha Trang">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Khánh Hòa (Nha Trang)</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Trung</span>
+              </div>
+              <small class="text-warning">22+ Resort Vịnh biển Nha Trang</small>
+            </div>
+          </div>
+        </div>
+        <!-- 6. Đà Lạt -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Trung" data-top="true" onclick="quickSelectCity('Đà Lạt')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Đà Lạt">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Lâm Đồng (Đà Lạt)</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Trung</span>
+              </div>
+              <small class="text-warning">25+ Biệt thự đồi thông săn mây</small>
+            </div>
+          </div>
+        </div>
+        <!-- 7. Sa Pa -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Bắc" data-top="true" onclick="quickSelectCity('Sa Pa')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80" alt="Sa Pa">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Lào Cai (Sa Pa)</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Bắc</span>
+              </div>
+              <small class="text-warning">12+ Resort săn mây đỉnh Fansipan</small>
+            </div>
+          </div>
+        </div>
+        <!-- 8. Vịnh Hạ Long -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Bắc" data-top="true" onclick="quickSelectCity('Hạ Long')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80" alt="Vịnh Hạ Long">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Quảng Ninh (Hạ Long)</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Bắc</span>
+              </div>
+              <small class="text-warning">16+ Du thuyền & Resort Vịnh Hạ Long</small>
+            </div>
+          </div>
+        </div>
+        <!-- 9. Hải Phòng -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Bắc" data-top="true" onclick="quickSelectCity('Hải Phòng')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80" alt="Hải Phòng">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Hải Phòng</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Bắc</span>
+              </div>
+              <small class="text-warning">15+ Resort Đảo Cát Bà & Đồ Sơn</small>
+            </div>
+          </div>
+        </div>
+        <!-- 10. Ninh Bình -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Bắc" data-top="true" onclick="quickSelectCity('Ninh Bình')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80" alt="Ninh Bình">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Ninh Bình</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Bắc</span>
+              </div>
+              <small class="text-warning">18+ Ecolodge Tràng An - Bái Đính</small>
+            </div>
+          </div>
+        </div>
+        <!-- 11. Thừa Thiên Huế -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Trung" data-top="true" onclick="quickSelectCity('Thừa Thiên Huế')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Thừa Thiên Huế">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Thừa Thiên Huế</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Trung</span>
+              </div>
+              <small class="text-warning">18+ Resort Cố đô & Lăng Cô</small>
+            </div>
+          </div>
+        </div>
+        <!-- 12. Quảng Nam (Hội An) -->
+        <div class="col-lg-3 col-md-4 col-sm-6 dest-card-item" data-region="Miền Trung" data-top="true" onclick="quickSelectCity('Quảng Nam (Hội An)')">
+          <div class="city-card">
+            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80" alt="Hội An">
+            <div class="city-card-overlay">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-white mb-0">Quảng Nam (Hội An)</h5>
+                <span class="badge bg-dark border border-warning text-warning" style="font-size: 0.68rem;">Miền Trung</span>
+              </div>
+              <small class="text-warning">20+ Resort Phố cổ Hội An & Cửa Đại</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==================== DANH SÁCH KHÁCH SẠN ==================== -->
+  <section class="py-4" id="hotels">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end flex-wrap mb-4">
+        <div>
+          <span class="text-warning fw-bold small text-uppercase"><i class="fa-solid fa-hotel me-1"></i> Khách Sạn & Resort Tiêu Chuẩn 5 Sao</span>
+          <h2 class="section-title text-white mb-0">DANH SÁCH PHÒNG NGHỈ THEO ĐỊA ĐIỂM</h2>
+        </div>
+
+        <!-- BỘ LỌC ĐỊA ĐIỂM + VÙNG MIỀN + KHOẢNG GIÁ -->
+        <div class="d-flex flex-column align-items-md-end gap-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div class="d-flex align-items-center bg-white px-3 py-1 rounded-pill border border-warning shadow-sm">
+              <i class="fa-solid fa-location-dot text-warning me-2"></i>
+              <select id="selectCitySearch" onchange="filterHotelsByLocation()" style="background-color: #ffffff !important; border: none; color: #0f172a !important; font-weight: 700; outline: none; cursor: pointer; font-size: 0.9rem; color-scheme: light !important;">
+                <option value="ALL" selected style="background-color: #ffffff; color: #0f172a;">🇻🇳 Tất cả tỉnh thành toàn quốc</option>
+              </select>
+            </div>
+            <div class="btn-group" role="group">
+              <button type="button" class="btn filter-btn-gold active" id="hotelRegion_ALL" onclick="filterHotelsByRegion('ALL')">Tất cả 3 Miền</button>
+              <button type="button" class="btn filter-btn-gold" id="hotelRegion_BAC" onclick="filterHotelsByRegion('Miền Bắc')">⛰️ Miền Bắc</button>
+              <button type="button" class="btn filter-btn-gold" id="hotelRegion_TRUNG" onclick="filterHotelsByRegion('Miền Trung')">🏖️ Miền Trung</button>
+              <button type="button" class="btn filter-btn-gold" id="hotelRegion_NAM" onclick="filterHotelsByRegion('Miền Nam')">🌴 Miền Nam</button>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn filter-btn-dark active" id="filterBudget_ALL" onclick="filterByPriceRange('ALL')">Tất cả giá</button>
+              <button type="button" class="btn filter-btn-dark" id="filterBudget_LOW" onclick="filterByPriceRange('LOW')">&lt; 1 Triệu</button>
+              <button type="button" class="btn filter-btn-dark" id="filterBudget_MID" onclick="filterByPriceRange('MID')">1 - 3 Triệu</button>
+              <button type="button" class="btn filter-btn-dark" id="filterBudget_HIGH" onclick="filterByPriceRange('HIGH')">&gt; 3 Triệu (VIP)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SPINNER LOADING HIỆU ỨNG TÌM KIẾM THỰC TẾ -->
+      <div id="hotelSearchLoader" class="text-center py-5 d-none">
+        <div class="spinner-border text-primary" style="width: 3.5rem; height: 3.5rem;" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <h5 class="fw-bold text-white mt-3"><i class="fa-solid fa-satellite-dish text-warning me-2"></i>Đang quét phòng trống trực tiếp theo thời gian thực...</h5>
+        <p class="text-muted small">Kết nối hệ thống chuỗi nghỉ dưỡng Imperial toàn quốc</p>
+      </div>
+
+      <div class="row g-4" id="hotelGridContainer">
+        <!-- 1. Deluxe Hướng Biển (Đà Nẵng) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Đà Nẵng">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-check me-1"></i> SẴN SÀNG</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Đà Nẵng</span>
+              <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Deluxe Hướng Biển">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Deluxe Hướng Biển</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Ban công nhìn thẳng ra vịnh biển Mỹ Khê, giường cỡ King, bồn tắm jacuzzi thư giãn và minibar sang trọng.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 55m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-wifi text-warning me-1"></i> Wifi 6</span>
+                <span><i class="fa-solid fa-water text-warning me-1"></i> View Biển</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    1.500.000đ <span class="original-price">2.100.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Deluxe Hướng Biển', 'Đà Nẵng', 1500000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Suite Tổng Thống (Đà Nẵng) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Đà Nẵng">
+          <div class="card-item" style="border-color: rgba(245, 158, 11, 0.4);">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-danger"><i class="fa-solid fa-crown me-1"></i> VIP CỰC PHẨM</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Đà Nẵng</span>
+              <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80" alt="Suite Tổng Thống">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Suite Tổng Thống</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0 (VIP)</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Tầng cao nhất với quản gia 24/7, phòng khách riêng, quầy bar rượu vang thượng hạng và xe Limousine đưa đón.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 140m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 4 Khách</span>
+                <span><i class="fa-solid fa-bell-concierge text-warning me-1"></i> Butler</span>
+                <span><i class="fa-solid fa-wine-glass text-warning me-1"></i> Bar</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    4.200.000đ <span class="original-price">5.500.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Suite Tổng Thống', 'Đà Nẵng', 4200000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Grand Metropole Suite (Hà Nội) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Hà Nội">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-city me-1"></i> TRUNG TÂM PHỐ CỔ</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Hà Nội</span>
+              <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Khách sạn Hà Nội">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Grand Heritage Hồ Gươm</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Tọa lạc ngay cạnh Nhà Hát Lớn & Hồ Gươm, kiến trúc Pháp cổ điển quý phái, phục vụ trà chiều và buffet sáng hoàng gia.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 65m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-mug-hot text-warning me-1"></i> Trà chiều</span>
+                <span><i class="fa-solid fa-car text-warning me-1"></i> Đón sân bay</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    2.850.000đ <span class="original-price">3.600.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Grand Heritage Hồ Gươm', 'Hà Nội', 2850000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Saigon Sky Luxury (TP. Hồ Chí Minh) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="TP. Hồ Chí Minh">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-warning text-dark"><i class="fa-solid fa-building me-1"></i> VIEW LANDMARK 81</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> TP.HCM</span>
+              <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80" alt="Khách sạn Sài Gòn">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Saigon Sky Penthouse</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 4.9</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Tầng 45 ngắm toàn cảnh sông Sài Gòn rực rỡ về đêm, thiết kế kính tràn viền siêu hiện đại và hồ bơi chân mây.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 80m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 3 Khách</span>
+                <span><i class="fa-solid fa-martini-glass text-warning me-1"></i> Sky Bar</span>
+                <span><i class="fa-solid fa-bath text-warning me-1"></i> Bồn sục</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    3.100.000đ <span class="original-price">4.200.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Saigon Sky Penthouse', 'TP. Hồ Chí Minh', 3100000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Sunset Ocean Villa (Phú Quốc) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Phú Quốc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-info"><i class="fa-solid fa-umbrella-beach me-1"></i> VILLA SÁT BIỂN</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Phú Quốc</span>
+              <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80" alt="Villa Phú Quốc">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Sunset Pool Villa Đảo Ngọc</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Hồ bơi riêng biệt từng căn, bước 3 bước chân là chạm cát trắng biển Bãi Dài, thưởng thức hoàng hôn tuyệt đẹp.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 110m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 4 Khách</span>
+                <span><i class="fa-solid fa-water-ladder text-warning me-1"></i> Hồ bơi riêng</span>
+                <span><i class="fa-solid fa-sun text-warning me-1"></i> Sunset</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    3.800.000đ <span class="original-price">4.900.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Sunset Pool Villa Đảo Ngọc', 'Phú Quốc', 3800000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Standard Đôi (Đà Nẵng) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Đà Nẵng">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-check me-1"></i> SẴN SÀNG</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Đà Nẵng</span>
+              <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80" alt="Standard Đôi">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Standard Đôi Classic</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 4.9</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Không gian tối giản Bắc Âu, 2 giường đơn đệm cao su thiên nhiên êm ái, wifi tốc độ cao, thích hợp công tác.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 32m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-snowflake text-warning me-1"></i> Máy lạnh</span>
+                <span><i class="fa-solid fa-mug-hot text-warning me-1"></i> Cafe</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    750.000đ <span class="original-price">1.050.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Standard Đôi Classic', 'Đà Nẵng', 750000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Da Lat Valley Pine Villa -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Đà Lạt">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-warning text-dark"><i class="fa-solid fa-fire me-1"></i> GIẢM 30% HÔM NAY</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Đà Lạt</span>
+              <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=800&q=80" alt="Biệt Thự Rừng Thông Đà Lạt">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Pine Hill Villa Đà Lạt</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Không gian săn mây giữa đồi thông thơ mộng, lò sưởi ấm cúng, trà atiso tươi và vườn hoa cẩm tú cầu nở rộ.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 70m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 - 4 Khách</span>
+                <span><i class="fa-solid fa-fire-burner text-warning me-1"></i> Lò sưởi</span>
+                <span><i class="fa-solid fa-cloud text-warning me-1"></i> Săn mây</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Chỉ còn 1 phòng!</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    1.850.000đ <span class="original-price">2.600.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Pine Hill Villa Đà Lạt', 'Đà Lạt', 1850000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Nha Trang Ocean Pearl Resort -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Nha Trang">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-info"><i class="fa-solid fa-gem me-1"></i> VỊNH BIỂN ĐẸP NHẤT</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Nha Trang</span>
+              <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80" alt="Nha Trang Resort">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Ocean Pearl Nha Trang</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Bãi tắm cát trắng biệt lập trên đường Trần Phú, ngắm bình minh trên vịnh, lặn ngắm san hô và tiệc nướng hải sản.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 60m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-water-ladder text-warning me-1"></i> Bể bơi</span>
+                <span><i class="fa-solid fa-fish text-warning me-1"></i> Hải sản</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    2.200.000đ <span class="original-price">2.900.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Ocean Pearl Nha Trang', 'Nha Trang', 2200000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. Sa Pa Cloud Valley Lodge -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Sa Pa">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-mountain me-1"></i> ĐỈNH FANSIPAN</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Sa Pa</span>
+              <img src="https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80" alt="Sa Pa Lodge">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Sa Pa Mường Hoa Lodge</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Ban công ngắm trọn thung lũng ruộng bậc thang kỳ vĩ, tắm lá thuốc thảo mộc Dao đỏ thư giãn xương khớp.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 50m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-spa text-warning me-1"></i> Tắm lá thuốc</span>
+                <span><i class="fa-solid fa-cloud-sun text-warning me-1"></i> View ruộng</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Chỉ còn 2 phòng!</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    1.650.000đ <span class="original-price">2.300.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Sa Pa Mường Hoa Lodge', 'Sa Pa', 1650000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. Da Lat Colline Boutique (Đà Lạt giá mềm) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Đà Lạt">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-leaf me-1"></i> TRUNG TÂM CHỢ ĐÊM</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Đà Lạt</span>
+              <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80" alt="Đà Lạt Colline">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Colline Boutique Đà Lạt</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 4.8</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Cách Chợ Đêm & Hồ Xuân Hương 200m, phong cách Pháp hiện đại, quán cafe view phố hoa cực chill.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 38m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-coffee text-warning me-1"></i> Cafe</span>
+                <span><i class="fa-solid fa-wifi text-warning me-1"></i> Wifi 6</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Tiết kiệm 35%</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    920.000đ <span class="original-price">1.400.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Colline Boutique Đà Lạt', 'Đà Lạt', 920000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11. Sa Pa Fansipan Ecolodge -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Sa Pa">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-warning text-dark"><i class="fa-solid fa-snowflake me-1"></i> VIEW NÚI HOÀNG LIÊN SƠN</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Sa Pa</span>
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Sa Pa Ecolodge">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Fansipan View Ecolodge</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 4.9</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Cửa sổ kính panorama nhìn thẳng đỉnh Fansipan tuyết trắng, có tiệc nướng BBQ than hoa sân vườn.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 45m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 - 3 Khách</span>
+                <span><i class="fa-solid fa-fire text-warning me-1"></i> BBQ</span>
+                <span><i class="fa-solid fa-mountain text-warning me-1"></i> Panorama</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    890.000đ <span class="original-price">1.350.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Fansipan View Ecolodge', 'Sa Pa', 890000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12. Hanoi Old Quarter Cozy Suite -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Hà Nội">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-info"><i class="fa-solid fa-tag me-1"></i> GIÁ TỐT NHẤT</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Hà Nội</span>
+              <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80" alt="Hà Nội Cozy">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Hanoi Cozy Heritage</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 4.8</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Ngay phố Tạ Hiện & Hàng Đào, ban công ngắm phố phường Hà Nội cổ kính, đầy đủ tiện nghi chuẩn 4 sao.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 30m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-city text-warning me-1"></i> Phố Cổ</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Ăn sáng</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Dưới 1 triệu</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    850.000đ <span class="original-price">1.200.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Hanoi Cozy Heritage', 'Hà Nội', 850000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 13. Ha Long Ambassador Royal Cruise (Hạ Long - VIP) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Hạ Long">
+          <div class="card-item" style="border-color: rgba(245, 158, 11, 0.4);">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-danger"><i class="fa-solid fa-anchor me-1"></i> DU THUYỀN 6 SAO</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Hạ Long</span>
+              <img src="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80" alt="Du thuyền Vịnh Hạ Long">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Ambassador Cruise Hạ Long</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0 (VIP)</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Cabin ban công riêng giữa kỳ quan Vịnh Hạ Long, bể sục Jacuzzi ngoài trời, tiệc tôm hùm và chèo Kayak khám phá hang Sửng Sốt.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 68m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 - 4 Khách</span>
+                <span><i class="fa-solid fa-ship text-warning me-1"></i> Du thuyền</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Tôm hùm</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Trọn gói 2N1Đ</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    3.650.000đ <span class="original-price">4.800.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Ambassador Cruise Hạ Long', 'Hạ Long', 3650000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 14. Citadines Marina Ha Long Bay (Hạ Long - Tầm trung) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Hạ Long">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-info"><i class="fa-solid fa-water me-1"></i> VIEW VỊNH DI SẢN</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Hạ Long</span>
+              <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80" alt="Khách sạn Hạ Long Marina">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Imperial Marina Hạ Long</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 5.0</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Tọa lạc tại bán đảo Bãi Cháy, tầm nhìn panorama ôm trọn vịnh đảo đá vôi, hồ bơi vô cực trên tầng thượng và bar bãi biển.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 52m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-water-ladder text-warning me-1"></i> Hồ vô cực</span>
+                <span><i class="fa-solid fa-champagne-glasses text-warning me-1"></i> Sky Bar</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá ưu đãi</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    1.950.000đ <span class="original-price">2.700.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Imperial Marina Hạ Long', 'Hạ Long', 1950000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 15. Bai Chay Harbor Boutique Hotel (Hạ Long - Giá tiết kiệm) -->
+        <div class="col-lg-4 col-md-6 hotel-card-item" data-city="Hạ Long">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-tag me-1"></i> GIÁ TỐT GẦN BIỂN</span>
+              <span class="badge-top-right"><i class="fa-solid fa-location-dot me-1"></i> Hạ Long</span>
+              <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80" alt="Khách sạn Bãi Cháy Hạ Long">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4 class="fw-bold mb-0 text-white">Bãi Cháy Harbor Boutique</h4>
+                <div class="text-warning small"><i class="fa-solid fa-star"></i> 4.9</div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Cách công viên Sun World & bãi tắm Bãi Cháy chỉ 3 phút đi bộ, phòng ốc hiện đại thoáng mát, miễn phí buffet sáng hải sản.</p>
+              
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-expand text-warning me-1"></i> 35m²</span>
+                <span><i class="fa-solid fa-users text-warning me-1"></i> 2 Khách</span>
+                <span><i class="fa-solid fa-umbrella-beach text-warning me-1"></i> Bãi Cháy</span>
+                <span><i class="fa-solid fa-wifi text-warning me-1"></i> Wifi 6</span>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Dưới 1 triệu</small>
+                  <div class="fs-5 fw-bold text-warning">
+                    880.000đ <span class="original-price">1.300.000đ</span>
+                  </div>
+                </div>
+                <button class="btn btn-glow-gold" onclick="openBookingModal('Bãi Cháy Harbor Boutique', 'Hạ Long', 880000)">Đặt Phòng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== DỊCH VỤ VÉ MÁY BAY THEO TỪNG VÙNG MIỀN (BẮC - TRUNG - NAM) ==================== -->
+  <section class="py-5" id="flights" style="background: rgba(15, 23, 42, 0.55); border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08);">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+        <div>
+          <span class="text-primary fw-bold small text-uppercase"><i class="fa-solid fa-plane-departure me-1"></i> Mạng Lưới Hàng Không Phủ Sóng Ba Miền</span>
+          <h2 class="display-6 fw-bold text-white mb-0">VÉ MÁY BAY THEO TỪNG VÙNG MIỀN</h2>
+        </div>
+
+        <!-- BỘ LỌC CHẶNG BAY THEO VÙNG MIỀN -->
+        <div class="btn-group flex-wrap" role="group">
+          <button type="button" class="btn filter-btn-dark active" id="btnFlightReg_ALL" onclick="renderRegionalFlights('ALL')">✈️ Tất Cả Đường Bay (18)</button>
+          <button type="button" class="btn filter-btn-dark" id="btnFlightReg_BAC" onclick="renderRegionalFlights('Miền Bắc')">⛰️ Vé Đi Miền Bắc (6)</button>
+          <button type="button" class="btn filter-btn-dark" id="btnFlightReg_TRUNG" onclick="renderRegionalFlights('Miền Trung')">🏖️ Vé Đi Miền Trung & Tây Nguyên (6)</button>
+          <button type="button" class="btn filter-btn-dark" id="btnFlightReg_NAM" onclick="renderRegionalFlights('Miền Nam')">🌴 Vé Đi Miền Nam (6)</button>
+        </div>
+      </div>
+
+      <div class="row g-4" id="flightsGridContainer">
+        <!-- ==================== KHU VỰC 1: ĐƯỜNG BAY & MÁY BAY MIỀN BẮC ==================== -->
+        <div class="col-12 flight-region-header" data-region="Miền Bắc">
+          <div class="p-3 rounded-4 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: linear-gradient(90deg, #eff6ff 0%, #ffffff 100%); border-left: 5px solid #2563eb; border: 1px solid #bfdbfe; border-left-width: 6px;">
+            <div>
+              <span class="badge bg-primary mb-1"><i class="fa-solid fa-plane-up me-1"></i> KHU VỰC MIỀN BẮC (6 ĐƯỜNG BAY)</span>
+              <h4 class="fw-bold mb-0 text-dark">⛰️ ĐƯỜNG BAY & MÁY BAY ĐI MIỀN BẮC (HÀ NỘI • HẠ LONG • HẢI PHÒNG • ĐIỆN BIÊN • SA PA)</h4>
+            </div>
+            <div class="d-flex gap-2">
+              <span class="badge bg-white text-primary border border-primary px-3 py-2"><i class="fa-solid fa-plane me-1"></i> Sân bay Nội Bài (HAN)</span>
+              <span class="badge bg-white text-primary border border-primary px-3 py-2"><i class="fa-solid fa-plane me-1"></i> Vân Đồn (VDO)</span>
+              <span class="badge bg-white text-primary border border-primary px-3 py-2"><i class="fa-solid fa-plane me-1"></i> Cát Bi (HPH)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. TP.HCM -> Hà Nội (Miền Bắc) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Bắc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 2h05m</span>
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="Máy bay TP.HCM - Hà Nội">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">⛰️ Miền Bắc</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Boeing 787 • VN-214</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: TP.HCM ➔ Hà Nội</h4>
+              <!-- SƠ ĐỒ ĐƯỜNG BAY TRỰC QUAN -->
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #eff6ff; border: 1px dashed #93c5fd;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">SGN (TP.HCM)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Tân Sơn Nhất</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 2h05m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">HAN (Hà Nội)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Nội Bài</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Tàu bay thân rộng Airbus A350/Boeing 787 đến Thủ đô Hà Nội, bao gồm 23kg hành lý ký gửi & suất ăn nóng.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Suất ăn nóng</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 08:00 - 10:05</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.450.000đ <span class="original-price">1.950.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay TP.HCM ➔ Hà Nội (VN-214)', 'Hà Nội', 1450000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Đà Nẵng -> Hà Nội (Miền Bắc) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Bắc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-plane me-1"></i> BAMBOO AIRWAYS</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h20m</span>
+              <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80" alt="Máy bay Đà Nẵng - Hà Nội">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">⛰️ Miền Bắc</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A321 • QH-102</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Đà Nẵng ➔ Hà Nội</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #eff6ff; border: 1px dashed #93c5fd;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">DAD (Đà Nẵng)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Đà Nẵng</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h20m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">HAN (Hà Nội)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Nội Bài</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Kết nối miền Trung với Thủ đô Hà Nội & trung chuyển đi Sa Pa, Ninh Bình, Hà Giang nhanh chóng.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 20kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Khăn lạnh</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 10:15 - 11:35</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">980.000đ <span class="original-price">1.390.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay Đà Nẵng ➔ Hà Nội (QH-102)', 'Hà Nội', 980000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. TP.HCM -> Quảng Ninh Vân Đồn (Miền Bắc) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Bắc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 2h15m</span>
+              <img src="https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80" alt="Đường bay TP.HCM - Quảng Ninh">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">⛰️ Miền Bắc</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A321 • VN-1286</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: TP.HCM ➔ Vân Đồn (Hạ Long)</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #eff6ff; border: 1px dashed #93c5fd;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">SGN (TP.HCM)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Tân Sơn Nhất</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 2h15m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">VDO (Hạ Long)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Vân Đồn</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Hạ cánh tại sân bay quốc tế Vân Đồn, có xe đưa đón thẳng về bến du thuyền Vịnh Hạ Long & Bãi Cháy.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-car text-warning me-1"></i> Xe đón Hạ Long</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 09:30 - 11:45</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.390.000đ <span class="original-price">1.850.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay TP.HCM ➔ Quảng Ninh (VN-1286)', 'Hạ Long', 1390000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. TP.HCM -> Hải Phòng Cát Bi (Miền Bắc) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Bắc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-danger"><i class="fa-solid fa-plane me-1"></i> VIETJET AIR</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 2h00m</span>
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="Máy bay TP.HCM - Hải Phòng">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">⛰️ Miền Bắc</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A320 • VJ-274</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: TP.HCM ➔ Hải Phòng</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #eff6ff; border: 1px dashed #93c5fd;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">SGN (TP.HCM)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Tân Sơn Nhất</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 2h00m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">HPH (Hải Phòng)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Cát Bi</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Chặng bay thẳng đến thành phố Cảng Hải Phòng, thuận tiện di chuyển ra đảo Cát Bà & Đồ Sơn.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 15kg gửi</span>
+                <span><i class="fa-solid fa-bag-shopping text-warning me-1"></i> 7kg xách tay</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 13:20 - 15:20</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.120.000đ <span class="original-price">1.550.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay TP.HCM ➔ Hải Phòng (VJ-274)', 'Hải Phòng', 1120000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Hà Nội -> Điện Biên Phủ (Miền Bắc) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Bắc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h00m</span>
+              <img src="https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80" alt="Đường bay Hà Nội - Điện Biên">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">⛰️ Miền Bắc</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A321 • VN-1802</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội ➔ Điện Biên Phủ</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #eff6ff; border: 1px dashed #93c5fd;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN (Hà Nội)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Nội Bài</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h00m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay Tây Bắc</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">DIN (Điện Biên)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Điện Biên</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Khám phá vùng núi Tây Bắc lịch sử (Điện Biên, Sơn La, Lai Châu) chỉ với 1 giờ bay thay vì 10 tiếng đường đèo.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-mountain text-warning me-1"></i> View Tây Bắc</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 11:00 - 12:00</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.050.000đ <span class="original-price">1.450.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay Hà Nội ➔ Điện Biên (VN-1802)', 'Điện Biên', 1050000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Combo Bay + Xe VIP Đi Sa Pa / Hà Giang (Miền Bắc) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Bắc">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-warning text-dark"><i class="fa-solid fa-crown me-1"></i> BUSINESS VIP</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Trọn Gói Khứ Hồi</span>
+              <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80" alt="Máy bay Thương Gia Miền Bắc">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">⛰️ Miền Bắc</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Khoang Thương Gia • VIP-NORTH</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay VIP: Nội Bài ➔ Sa Pa / Hà Giang</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #eff6ff; border: 1px dashed #93c5fd;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">SGN / DAD</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Khởi hành</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> + <i class="fa-solid fa-van-shuttle"></i></div>
+                  <div style="height:2px; background: linear-gradient(90deg, #93c5fd, #2563eb, #93c5fd); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Bay + Limousine</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">HAN ➔ SA PA</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Đón tận Resort</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Vé máy bay khứ hồi hạng Thương Gia đến Nội Bài kèm xe Limousine VIP đưa đón tận Resort Sa Pa / Hà Giang.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 40kg gửi</span>
+                <span><i class="fa-solid fa-champagne-glasses text-warning me-1"></i> Phòng chờ VIP</span>
+                <span><i class="fa-solid fa-van-shuttle text-warning me-1"></i> Xe Limousine</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">3.450.000đ <span class="original-price">4.500.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay Combo VIP Đi Sa Pa (VIP-NORTH)', 'Sa Pa', 3450000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== KHU VỰC 2: ĐƯỜNG BAY & MÁY BAY MIỀN TRUNG & TÂY NGUYÊN ==================== -->
+        <div class="col-12 mt-4 flight-region-header" data-region="Miền Trung">
+          <div class="p-3 rounded-4 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: linear-gradient(90deg, #fffbeb 0%, #ffffff 100%); border: 1px solid #fde68a; border-left: 6px solid #f59e0b;">
+            <div>
+              <span class="badge bg-warning text-dark mb-1"><i class="fa-solid fa-plane-up me-1"></i> KHU VỰC MIỀN TRUNG & TÂY NGUYÊN (6 ĐƯỜNG BAY)</span>
+              <h4 class="fw-bold mb-0 text-dark">🏖️ ĐƯỜNG BAY & MÁY BAY ĐI MIỀN TRUNG (ĐÀ NẴNG • NHA TRANG • ĐÀ LẠT • HUẾ • QUY NHƠN • TÂY NGUYÊN)</h4>
+            </div>
+            <div class="d-flex gap-2">
+              <span class="badge bg-white text-dark border border-warning px-3 py-2"><i class="fa-solid fa-plane me-1 text-warning"></i> Đà Nẵng (DAD)</span>
+              <span class="badge bg-white text-dark border border-warning px-3 py-2"><i class="fa-solid fa-plane me-1 text-warning"></i> Cam Ranh (CXR)</span>
+              <span class="badge bg-white text-dark border border-warning px-3 py-2"><i class="fa-solid fa-plane me-1 text-warning"></i> Liên Khương (DLI)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. TP.HCM / Hà Nội -> Đà Nẵng (Miền Trung) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Trung">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h20m</span>
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi Đà Nẵng">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🏖️ Miền Trung</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A350 • VN-128</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Đà Nẵng</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #fffbeb; border: 1px dashed #fcd34d;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h20m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #fcd34d, #d97706, #fcd34d); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">DAD (Đà Nẵng)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Đà Nẵng</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Đường bay sôi động nhất miền Trung kết nối thẳng đến biển Mỹ Khê Đà Nẵng & Phố cổ Hội An (Quảng Nam).</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Suất ăn</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 08:30 - 09:50</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.150.000đ <span class="original-price">1.650.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Đà Nẵng (VN-128)', 'Đà Nẵng', 1150000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Hà Nội / TP.HCM -> Nha Trang Cam Ranh (Miền Trung) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Trung">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-plane me-1"></i> BAMBOO AIRWAYS</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h15m</span>
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" alt="Đường bay đi Nha Trang">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🏖️ Miền Trung</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Boeing 787 • QH-142</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Nha Trang</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #fffbeb; border: 1px dashed #fcd34d;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h15m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #fcd34d, #d97706, #fcd34d); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay biển</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">CXR (Nha Trang)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Cam Ranh</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Hạ cánh tại sân bay quốc tế Cam Ranh (Khánh Hòa), ngắm trọn vịnh biển Nha Trang xanh ngọc bích từ trên cao.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 20kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Suất ăn nhẹ</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 09:15 - 10:30</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.090.000đ <span class="original-price">1.500.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Nha Trang (QH-142)', 'Nha Trang', 1090000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. Hà Nội / TP.HCM -> Đà Lạt Liên Khương (Miền Trung) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Trung">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 55m</span>
+              <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi Đà Lạt">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🏖️ Miền Trung</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A321 • VN-1380</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Đà Lạt</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #fffbeb; border: 1px dashed #fcd34d;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 55 phút</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #fcd34d, #d97706, #fcd34d); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">DLI (Đà Lạt)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Liên Khương</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Chặng bay lãng mạn lên cao nguyên Lâm Viên (Lâm Đồng), tận hưởng không khí se lạnh và rừng thông Đà Lạt.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-mug-hot text-warning me-1"></i> Trà nóng</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 07:45 - 08:40</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">950.000đ <span class="original-price">1.350.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Đà Lạt (VN-1380)', 'Đà Lạt', 950000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. Hà Nội / TP.HCM -> Huế Phú Bài (Miền Trung) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Trung">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h15m</span>
+              <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" alt="Đường bay đi Huế">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🏖️ Miền Trung</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A321 • VN-1372</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Huế</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #fffbeb; border: 1px dashed #fcd34d;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h15m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #fcd34d, #d97706, #fcd34d); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">HUI (Cố đô Huế)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Phú Bài</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Hạ cánh tại nhà ga T2 sân bay quốc tế Phú Bài kiến trúc cung đình, khám phá Đại Nội Huế & vịnh Lăng Cô.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-star text-warning me-1"></i> Check-in VIP</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 14:00 - 15:15</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.020.000đ <span class="original-price">1.420.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Huế (VN-1372)', 'Thừa Thiên Huế', 1020000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11. Hà Nội / TP.HCM -> Quy Nhơn Phù Cát (Miền Trung) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Trung">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-plane me-1"></i> BAMBOO AIRWAYS</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h10m</span>
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi Quy Nhơn">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🏖️ Miền Trung</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Embraer E190 • QH-121</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Quy Nhơn</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #fffbeb; border: 1px dashed #fcd34d;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h10m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #fcd34d, #d97706, #fcd34d); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">UIH (Quy Nhơn)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Phù Cát</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Bay thẳng đến thiên đường biển Kỳ Co - Eo Gió (Bình Định) và Phú Yên hoa vàng trên cỏ xanh.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 20kg gửi</span>
+                <span><i class="fa-solid fa-chair text-warning me-1"></i> Chọn ghế miễn phí</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 10:40 - 11:50</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">990.000đ <span class="original-price">1.400.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Quy Nhơn (QH-121)', 'Bình Định (Quy Nhơn)', 990000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12. Hà Nội / TP.HCM -> Buôn Ma Thuột & Pleiku (Miền Trung & Tây Nguyên) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Trung">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-danger"><i class="fa-solid fa-plane me-1"></i> VIETJET AIR</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h00m</span>
+              <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi Tây Nguyên">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🏖️ Tây Nguyên</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A320 • VJ-356</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Buôn Ma Thuột</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #fffbeb; border: 1px dashed #fcd34d;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-warning"><i class="fa-solid fa-plane"></i> 1h00m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #fcd34d, #d97706, #fcd34d); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay Tây Nguyên</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">BMV (Đắk Lắk)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Buôn Ma Thuột</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Khám phá đại ngàn Tây Nguyên (Đắk Lắk, Gia Lai, Kon Tum - Măng Đen) cùng thủ phủ cà phê Việt Nam.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 15kg gửi</span>
+                <span><i class="fa-solid fa-mug-saucer text-warning me-1"></i> Cà phê Tây Nguyên</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 15:10 - 16:10</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">890.000đ <span class="original-price">1.250.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Buôn Ma Thuột (VJ-356)', 'Đắk Lắk', 890000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== KHU VỰC 3: ĐƯỜNG BAY & MÁY BAY MIỀN NAM ==================== -->
+        <div class="col-12 mt-4 flight-region-header" data-region="Miền Nam">
+          <div class="p-3 rounded-4 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: linear-gradient(90deg, #ecfdf5 0%, #ffffff 100%); border: 1px solid #a7f3d0; border-left: 6px solid #10b981;">
+            <div>
+              <span class="badge bg-success mb-1"><i class="fa-solid fa-plane-up me-1"></i> KHU VỰC MIỀN NAM (6 ĐƯỜNG BAY)</span>
+              <h4 class="fw-bold mb-0 text-dark">🌴 ĐƯỜNG BAY & MÁY BAY ĐI MIỀN NAM (TP.HCM • PHÚ QUỐC • CẦN THƠ • CÔN ĐẢO • CÀ MAU)</h4>
+            </div>
+            <div class="d-flex gap-2">
+              <span class="badge bg-white text-success border border-success px-3 py-2"><i class="fa-solid fa-plane me-1"></i> Tân Sơn Nhất (SGN)</span>
+              <span class="badge bg-white text-success border border-success px-3 py-2"><i class="fa-solid fa-plane me-1"></i> Phú Quốc (PQC)</span>
+              <span class="badge bg-white text-success border border-success px-3 py-2"><i class="fa-solid fa-plane me-1"></i> Cần Thơ (VCA)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 13. Hà Nội / Đà Nẵng -> TP.HCM Tân Sơn Nhất (Miền Nam) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Nam">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 2h05m</span>
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi TP.HCM">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🌴 Miền Nam</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Boeing 787 • VN-219</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / Đà Nẵng ➔ TP.HCM</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #ecfdf5; border: 1px dashed #6ee7b7;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / DAD</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / Đà Nẵng</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-success"><i class="fa-solid fa-plane"></i> 2h05m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #6ee7b7, #10b981, #6ee7b7); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay trục chính</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">SGN (TP.HCM)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Tân Sơn Nhất</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Đường bay trục chính Bắc - Nam tần suất 30 phút/chuyến, tàu bay Boeing 787 Dreamliner hiện đại bậc nhất.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Suất ăn 4 sao</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 09:00 - 11:05</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.380.000đ <span class="original-price">1.890.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi TP.HCM (VN-219)', 'TP. Hồ Chí Minh', 1380000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 14. Hà Nội / TP.HCM -> Đảo Ngọc Phú Quốc (Miền Nam) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Nam">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 1h00m</span>
+              <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80" alt="Đường bay đi Phú Quốc">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🌴 Miền Nam</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A350 • VN-1825</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / TP.HCM ➔ Phú Quốc</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #ecfdf5; border: 1px dashed #6ee7b7;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / SGN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / TSN</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-success"><i class="fa-solid fa-plane"></i> 1h00m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #6ee7b7, #10b981, #6ee7b7); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay biển đảo</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">PQC (Phú Quốc)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Phú Quốc</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Chặng bay thẳng đến thiên đường nghỉ dưỡng Đảo Ngọc Phú Quốc (Kiên Giang), miễn phí xe đón về Resort Bãi Dài.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-car text-warning me-1"></i> Xe đón Resort</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 11:20 - 12:20</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.190.000đ <span class="original-price">1.690.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Phú Quốc (VN-1825)', 'Phú Quốc', 1190000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 15. Hà Nội / Đà Nẵng -> Cần Thơ Tây Đô (Miền Nam) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Nam">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-plane me-1"></i> BAMBOO AIRWAYS</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 2h10m</span>
+              <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi Cần Thơ">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🌴 Miền Nam</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Airbus A321 • QH-118</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: Hà Nội / Đà Nẵng ➔ Cần Thơ</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #ecfdf5; border: 1px dashed #6ee7b7;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / DAD</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Nội Bài / Đà Nẵng</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-success"><i class="fa-solid fa-plane"></i> 2h10m</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #6ee7b7, #10b981, #6ee7b7); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">VCA (Cần Thơ)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Cần Thơ</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Kết nối trực tiếp đến thủ phủ miền Tây sông nước Cần Thơ, thuận tiện đi An Giang, Bến Tre, Tiền Giang.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 20kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Suất ăn nóng</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 12:30 - 14:40</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.250.000đ <span class="original-price">1.750.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Cần Thơ (QH-118)', 'Cần Thơ', 1250000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 16. TP.HCM / Hà Nội -> Côn Đảo Bà Rịa - Vũng Tàu (Miền Nam) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Nam">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-primary"><i class="fa-solid fa-plane me-1"></i> VIETNAM AIRLINES</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 50m</span>
+              <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80" alt="Đường bay đi Côn Đảo">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🌴 Miền Nam</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay ATR-72 / E190 • VN-8059</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: TP.HCM / Hà Nội ➔ Côn Đảo</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #ecfdf5; border: 1px dashed #6ee7b7;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">SGN / HAN</div>
+                  <small class="text-muted" style="font-size:0.7rem;">TSN / Nội Bài</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-success"><i class="fa-solid fa-plane"></i> 50 phút</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #6ee7b7, #10b981, #6ee7b7); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay Côn Đảo</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">VCS (Côn Đảo)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Bà Rịa - Vũng Tàu</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Chặng bay đặc biệt ra quần đảo Côn Đảo hoang sơ tuyệt đẹp thuộc tỉnh Bà Rịa - Vũng Tàu.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 23kg gửi</span>
+                <span><i class="fa-solid fa-bolt text-warning me-1"></i> Ưu tiên thủ tục</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 07:30 - 08:20</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">1.650.000đ <span class="original-price">2.150.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Côn Đảo (VN-8059)', 'Bà Rịa - Vũng Tàu', 1650000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 17. TP.HCM -> Cà Mau / Rạch Giá (Miền Nam) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Nam">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-success"><i class="fa-solid fa-plane me-1"></i> BAMBOO AIRWAYS</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Bay Thẳng 55m</span>
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="Máy bay đi Cà Mau">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🌴 Miền Nam</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Embraer E190 • QH-1901</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay: TP.HCM ➔ Cà Mau / Rạch Giá</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #ecfdf5; border: 1px dashed #6ee7b7;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">SGN (TP.HCM)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Tân Sơn Nhất</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-success"><i class="fa-solid fa-plane"></i> 55 phút</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #6ee7b7, #10b981, #6ee7b7); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Đường bay thẳng</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">CAH (Cà Mau)</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Sân bay Cà Mau</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Đường bay kết nối nhanh chóng từ TP.HCM về cực Nam Tổ quốc Đất Mũi Cà Mau và vùng biển Tây Nam.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 20kg gửi</span>
+                <span><i class="fa-solid fa-utensils text-warning me-1"></i> Khăn lạnh</span>
+                <span><i class="fa-solid fa-clock text-warning me-1"></i> 08:45 - 09:40</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">980.000đ <span class="original-price">1.380.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay đi Cà Mau (QH-1901)', 'Cà Mau', 980000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 18. Khứ Hồi Hạng Thương Gia 3 Miền (Miền Nam) -->
+        <div class="col-lg-4 col-md-6 flight-card-item" data-region="Miền Nam">
+          <div class="card-item">
+            <div class="card-img-holder">
+              <span class="badge-top-left bg-warning text-dark"><i class="fa-solid fa-crown me-1"></i> BUSINESS VIP</span>
+              <span class="badge-top-right"><i class="fa-solid fa-bolt me-1 text-warning"></i> Phòng Chờ Bông Sen</span>
+              <img src="https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80" alt="Máy bay Thương Gia">
+            </div>
+            <div class="p-4 d-flex flex-column flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-dark border border-info text-info">🌴 Miền Nam</span>
+                <div class="badge bg-primary-subtle text-primary border border-primary px-2 py-1">Máy bay Boeing 787-10 • VIP-SOUTH</div>
+              </div>
+              <h4 class="fw-bold mb-2 text-white fs-5">Đường bay Thương Gia: Bắc – Trung – Nam</h4>
+              <div class="d-flex align-items-center justify-content-between px-3 py-2 mb-3 rounded-3" style="background: #ecfdf5; border: 1px dashed #6ee7b7;">
+                <div class="text-start">
+                  <div class="fw-bold text-primary small">HAN / DAD</div>
+                  <small class="text-muted" style="font-size:0.7rem;">Khởi hành VIP</small>
+                </div>
+                <div class="text-center px-2 flex-grow-1">
+                  <div class="small fw-bold text-success"><i class="fa-solid fa-plane"></i> SkyPriority</div>
+                  <div style="height:2px; background: linear-gradient(90deg, #6ee7b7, #10b981, #6ee7b7); margin: 2px 0;"></div>
+                  <small class="text-secondary" style="font-size:0.68rem;">Khoang Thương Gia</small>
+                </div>
+                <div class="text-end">
+                  <div class="fw-bold text-danger small">SGN / PQC</div>
+                  <small class="text-muted" style="font-size:0.7rem;">TP.HCM / Phú Quốc</small>
+                </div>
+              </div>
+              <p class="card-desc-text flex-grow-1">Ghế ngả phẳng 180 độ, ẩm thực 5 sao, lối đi ưu tiên SkyPriority áp dụng cho mọi chặng bay Miền Nam & Phú Quốc.</p>
+              <div class="d-flex gap-3 spec-icon-row">
+                <span><i class="fa-solid fa-suitcase text-warning me-1"></i> 40kg gửi</span>
+                <span><i class="fa-solid fa-wine-glass text-warning me-1"></i> Rượu vang Pháp</span>
+                <span><i class="fa-solid fa-bed text-warning me-1"></i> Ghế phẳng 180°</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <div>
+                  <small style="color: #94a3b8;">Giá vé ưu đãi</small>
+                  <div class="fs-5 fw-bold text-info">3.850.000đ <span class="original-price">5.100.000đ</span></div>
+                </div>
+                <button class="btn btn-primary px-3 fw-bold" style="border-radius: 10px;" onclick="openBookingModal('Vé máy bay Business Class 3 Miền (VIP-SOUTH)', 'TP. Hồ Chí Minh', 3850000)">Đặt Vé</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TIỆN ÍCH 5 SAO ==================== -->
+  <section class="py-5" id="amenities">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="text-warning fw-bold small text-uppercase" style="letter-spacing: 2px;">Đẳng Cấp Thượng Lưu</span>
+        <h2 class="display-6 fw-bold text-white mt-1">DỊCH VỤ & TIỆN ÍCH TIÊU CHUẨN 5 SAO</h2>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-6">
+          <div class="amenity-card">
+            <div class="amenity-icon-box"><i class="fa-solid fa-water-ladder"></i></div>
+            <h5 class="fw-bold text-white mb-2">Hồ Bơi Vô Cực</h5>
+            <p class="text-muted small mb-0">Hồ bơi tràn bờ hướng trực diện biển tầng thượng với quầy bar nước phục vụ cocktail nhiệt đới.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="amenity-card">
+            <div class="amenity-icon-box"><i class="fa-solid fa-spa"></i></div>
+            <h5 class="fw-bold text-white mb-2">Spa & Trị Liệu Thảo Dược</h5>
+            <p class="text-muted small mb-0">Không gian xông hơi đá muối Himalaya, massage cổ truyền Thái Lan phục hồi năng lượng thể chất.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="amenity-card">
+            <div class="amenity-icon-box"><i class="fa-solid fa-utensils"></i></div>
+            <h5 class="fw-bold text-white mb-2">Ẩm Thực Fine Dining</h5>
+            <p class="text-muted small mb-0">Nhà hàng hải sản tươi sống và bếp trưởng Michelin phục vụ các món Âu - Á sang trọng.</p>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="amenity-card">
+            <div class="amenity-icon-box"><i class="fa-solid fa-plane-arrival"></i></div>
+            <h5 class="fw-bold text-white mb-2">Đưa Đón Sân Bay VIP</h5>
+            <p class="text-muted small mb-0">Dàn xe Limousine cao cấp đón trả khách tận ga quốc tế, phục vụ nước suối khăn lạnh chu đáo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BẢNG QUẢN LÝ DÀNH RIÊNG CHO QUẢN TRỊ VIÊN (ẨN VỚI KHÁCH HÀNG) ==================== -->
+  <section class="py-5" id="booking-manager" style="display: none; background: #ffffff;">
+    <div class="container">
+      <div class="booking-engine p-4 rounded-4 bg-white" style="margin-top: 0; border: 2px solid #ef4444; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+          <div>
+            <span class="badge bg-danger mb-1"><i class="fa-solid fa-lock me-1"></i> KHU VỰC DÀNH CHO ADMIN / QUẢN TRỊ VIÊN</span>
+            <h3 class="fw-bold text-dark mb-1">DANH SÁCH TẤT CẢ ĐƠN ĐẶT PHÒNG HỆ THỐNG (POSTGRESQL)</h3>
+            <p class="mb-0 text-muted">Khách hàng thông thường không được xem khu vực này. Dữ liệu bảng <code>bookings</code>.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <span class="badge bg-success py-2 px-3 align-self-center"><i class="fa-solid fa-database me-1"></i> PostgreSQL Connected</span>
+            <button class="btn btn-sm btn-outline-primary fw-bold" onclick="fetchBookingsFromDB()"><i class="fa-solid fa-rotate me-1"></i> Tải lại</button>
+          </div>
+        </div>
+
+        <!-- BỘ LỌC VÀ TÌM KIẾM ĐƠN HÀNG -->
+        <div class="row g-2 mb-3 p-3 rounded" style="background: #f8fafc; border: 1px solid #cbd5e1;">
+          <div class="col-md-5">
+            <div class="input-group">
+              <span class="input-group-text bg-white border-secondary text-warning"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <input type="text" id="searchBookingInput" class="form-control form-dark" placeholder="Tìm theo mã đơn (#BK...) hoặc tên khách..." onkeyup="filterBookingsTable()">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <select class="form-select form-dark" id="filterStatusSelect" onchange="filterBookingsTable()" style="background-color: #ffffff !important; color: #0f172a !important; color-scheme: light !important;">
+              <option value="ALL" style="background-color: #ffffff; color: #0f172a;">Tất cả trạng thái đơn</option>
+              <option value="Đã xác nhận" style="background-color: #ffffff; color: #0f172a;">Đã xác nhận</option>
+              <option value="Đã thanh toán" style="background-color: #ffffff; color: #0f172a;">Đã thanh toán</option>
+            </select>
+          </div>
+          <div class="col-md-3 text-md-end d-flex align-items-center justify-content-end text-muted small">
+            <span>Tổng số: <strong class="text-danger" id="countBookingRows">0</strong> đơn đặt</span>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-custom text-white align-middle">
+            <thead class="text-warning" style="border-bottom: 2px solid rgba(245, 158, 11, 0.4);">
+              <tr>
+                <th>MÃ ĐƠN</th>
+                <th>KHÁCH HÀNG</th>
+                <th>SỐ ĐIỆN THOẠI</th>
+                <th>PHÒNG ĐẶT</th>
+                <th>NGÀY NHẬN PHÒNG</th>
+                <th>TỔNG TIỀN</th>
+                <th>TRẠNG THÁI</th>
+              </tr>
+            </thead>
+            <tbody id="booking-tbody">
+              <!-- Render động -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MODAL ĐĂNG NHẬP LIÊN KẾT MƯỢT MÀ VỚI ĐĂNG KÝ ==================== -->
+  <div class="modal fade" id="modalAuthLogin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+      <div class="modal-content modal-auth-content p-4">
+        <div class="modal-header border-0 pb-0 justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-hotel text-warning fs-4"></i>
+            <h4 class="fw-bold mb-0 text-white">Đăng nhập tài khoản</h4>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-2 mt-2">
+          <!-- THÔNG BÁO KHI VỪA ĐĂNG KÝ TÀI KHOẢN XONG CHUYỂN SANG -->
+          <div id="loginRegisteredBanner" class="alert alert-success py-2 px-3 small fw-semibold mb-3" style="display: none; border-radius: 12px;">
+            <i class="fa-solid fa-circle-check me-1"></i> <span id="loginRegisteredBannerText">Đăng ký thành công! Thông tin đã được điền sẵn.</span>
+          </div>
+
+          <!-- THÔNG BÁO LỖI ĐĂNG NHẬP NẾU NHẬP SAI -->
+          <div id="loginErrorNotice" class="alert alert-danger py-2 px-3 small fw-semibold mb-3" style="display: none; border-radius: 12px;"></div>
+
+          <p class="text-secondary small mb-2">Chọn nhanh tài khoản mẫu hoặc đăng nhập bằng tài khoản bạn vừa đăng ký:</p>
+
+          <!-- NÚT CHỌN NHANH 2 QUYỀN HẠN -->
+          <div class="d-grid gap-2 mb-3">
+            <button type="button" class="btn btn-sm btn-outline-primary text-start p-2" onclick="quickFillRole('customer')">
+              <div class="fw-bold"><i class="fa-solid fa-user me-1 text-primary"></i> 1. Tài khoản mẫu KHÁCH HÀNG (User)</div>
+              <small class="text-muted">Đặt phòng & khám phá điểm đến toàn quốc.</small>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger text-start p-2" onclick="quickFillRole('admin')">
+              <div class="fw-bold"><i class="fa-solid fa-shield-halved me-1 text-danger"></i> 2. Tài khoản QUẢN TRỊ VIÊN (Admin)</div>
+              <small class="text-muted">Quản lý cơ sở dữ liệu PostgreSQL & toàn bộ đơn đặt phòng.</small>
+            </button>
+          </div>
+
+          <form id="formAuthLogin" onsubmit="handleAuthLogin(event)">
+            <div class="mb-3 text-start">
+              <label class="form-label small text-secondary fw-bold">Email hoặc Số điện thoại *</label>
+              <input type="text" id="authLoginUser" class="form-control form-dark" placeholder="Nhập email hoặc số điện thoại..." required>
+            </div>
+            <div class="mb-3 text-start">
+              <label class="form-label small text-secondary fw-bold">Mật khẩu *</label>
+              <input type="password" id="authLoginPass" class="form-control form-dark" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-auth-register w-100 py-3 mb-2 fw-bold">
+              <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Xác Nhận Đăng Nhập
+            </button>
+          </form>
+
+          <!-- NÚT CHUYỂN MƯỢT SANG ĐĂNG KÝ -->
+          <div class="auth-switch-box">
+            <span class="small text-secondary">Bạn chưa có tài khoản thành viên?</span>
+            <a href="javascript:void(0)" onclick="switchAuthModal('register')" class="fw-bold text-primary text-decoration-none ms-1">
+              Đăng ký tài khoản ngay <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<footer class="text-center py-4 text-muted bg-white border-top">
-  <small>© 2026 Grand Hotel System • Mã SV: DTC245200947</small>
-</footer>
+  <!-- ==================== MODAL ĐĂNG KÝ LIÊN KẾT MƯỢT MÀ SANG ĐĂNG NHẬP ==================== -->
+  <div class="modal fade" id="modalAuthRegister" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+      <div class="modal-content modal-auth-content p-4">
+        <div class="modal-header border-0 pb-0 justify-content-between">
+          <h4 class="fw-bold mb-0 text-white"><i class="fa-solid fa-user-plus text-primary me-2"></i>Đăng ký tài khoản mới</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-2 mt-2">
+          <div id="registerErrorNotice" class="alert alert-danger py-2 px-3 small fw-semibold mb-3" style="display: none; border-radius: 12px;"></div>
+
+          <form id="formAuthRegister" onsubmit="handleAuthRegister(event)">
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-bold">Họ và tên của bạn *</label>
+              <input type="text" id="authRegName" class="form-control form-dark" placeholder="Ví dụ: Đào Trọng Đức Nhân" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-bold">Email hoặc Tên đăng nhập *</label>
+              <input type="text" id="authRegContact" class="form-control form-dark" placeholder="Ví dụ: ducnhan@gmail.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small text-secondary fw-bold">Số điện thoại liên hệ đặt phòng *</label>
+              <input type="tel" id="authRegPhone" class="form-control form-dark" placeholder="Ví dụ: 0988.123.947" required>
+            </div>
+            <div class="row g-2 mb-4">
+              <div class="col-6">
+                <label class="form-label small text-secondary fw-bold">Mật khẩu *</label>
+                <input type="password" id="authRegPass" class="form-control form-dark" placeholder="••••••••" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label small text-secondary fw-bold">Nhập lại mật khẩu *</label>
+                <input type="password" id="authRegPassConfirm" class="form-control form-dark" placeholder="••••••••" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-auth-register w-100 py-3 mb-2 fw-bold">
+              <i class="fa-solid fa-paper-plane me-2"></i> Hoàn Tất Đăng Ký & Chuyển Sang Đăng Nhập
+            </button>
+          </form>
+
+          <!-- NÚT CHUYỂN MƯỢT SANG ĐĂNG NHẬP -->
+          <div class="auth-switch-box">
+            <span class="small text-secondary">Bạn đã có tài khoản?</span>
+            <a href="javascript:void(0)" onclick="switchAuthModal('login')" class="fw-bold text-primary text-decoration-none ms-1">
+              Đăng nhập ngay <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL ĐẶT PHÒNG KHÁCH SẠN ==================== -->
+  <div class="modal fade" id="modalBooking" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+      <div class="modal-content modal-auth-content p-4">
+        <div class="modal-header border-0 pb-0 justify-content-between">
+          <div>
+            <h4 class="modal-title fw-bold text-primary mb-1" id="modalServiceTitle"><i class="fa-solid fa-key me-2" id="modalServiceIcon"></i>ĐẶT PHÒNG KHÁCH SẠN</h4>
+            <p class="small text-muted mb-0" id="modalServiceSubtitle">Xác nhận thông tin & áp dụng voucher ưu đãi</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-2 mt-2">
+          <form id="formReserve" onsubmit="submitReservation(event)">
+            <div class="mb-3">
+              <label class="form-label text-primary small fw-bold" id="labelSelectedService"><i class="fa-solid fa-hotel me-1"></i> DỊCH VỤ / PHÒNG ĐÃ CHỌN</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-secondary text-warning" id="addonServiceIcon"><i class="fa-solid fa-bed"></i></span>
+                <input type="text" id="reserveRoomName" class="form-control form-dark fw-bold fs-6" style="background-color: #fffbeb !important; color: #b45309 !important; font-size: 1.05rem !important;" readonly>
+              </div>
+            </div>
+            
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-bold">HỌ VÀ TÊN KHÁCH *</label>
+                <input type="text" id="custFullName" class="form-control form-dark" placeholder="Đào Trọng Đức Nhân" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-bold">SỐ ĐIỆN THOẠI *</label>
+                <input type="tel" id="custPhoneNum" class="form-control form-dark" placeholder="0987.654.321" required>
+              </div>
+            </div>
+
+            <!-- TÍNH TOÁN SỐ NGÀY / SỐ ĐÊM TỰ ĐỘNG VỚI LABEL LINH HOẠT -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-bold" id="labelDateStart"><i class="fa-regular fa-calendar-days me-1"></i> NGÀY NHẬN (CHECK-IN) *</label>
+                <input type="date" id="custCheckin" class="form-control form-dark" onchange="recalcBookingPrice()" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-dark small fw-bold" id="labelDateEnd"><i class="fa-regular fa-calendar-check me-1"></i> NGÀY TRẢ (CHECK-OUT) *</label>
+                <input type="date" id="custCheckout" class="form-control form-dark" onchange="recalcBookingPrice()" required>
+              </div>
+            </div>
+
+            <!-- CHỌN PHƯƠNG THỨC THANH TOÁN (PAYMENT METHOD) -->
+            <div class="mb-3">
+              <label class="form-label text-dark small fw-bold"><i class="fa-solid fa-credit-card me-1"></i> HÌNH THỨC THANH TOÁN</label>
+              <select id="selectPaymentMethod" class="form-select form-dark fw-semibold" style="cursor: pointer; background-color: #ffffff !important; color: #0f172a !important; color-scheme: light !important;">
+                <option value="HOTEL_PAY" selected>🏨 Thanh toán tại quầy lễ tân khi nhận phòng (Miễn phí đặt trước)</option>
+                <option value="VIETQR">📲 Chuyển khoản VietQR / MoMo 24/7 (Nhận E-Ticket tức thì)</option>
+                <option value="VISA">💳 Thẻ Quốc Tế Visa / Mastercard / JCB</option>
+              </select>
+            </div>
+
+            <!-- Ô NHẬP MÃ GIẢM GIÁ VOUCHER VỚI SHAKE ANIMATION KHI SAI -->
+            <div class="mb-3 p-3 rounded" id="voucherBoxWrapper" style="background: #fffbeb; border: 1px dashed #f59e0b; transition: transform 0.2s;">
+              <label class="form-label text-dark small fw-bold mb-1"><i class="fa-solid fa-tags text-warning me-1"></i> MÃ VOUCHER ƯU ĐÃI (MÃ: IMPERIAL-VIP947)</label>
+              <div class="input-group">
+                <input type="text" id="voucherCodeInput" class="form-control form-dark text-uppercase font-monospace" placeholder="Nhập mã voucher...">
+                <button type="button" class="btn btn-warning fw-bold px-3" onclick="applyPromoVoucher()">ÁP DỤNG</button>
+              </div>
+              <div id="voucherNotice" class="small mt-1 text-success fw-semibold" style="display: none;"></div>
+            </div>
+
+            <!-- TỔNG KẾT TIỀN THỰC TẾ -->
+            <div class="d-flex justify-content-between align-items-center mb-4 p-3 rounded" style="background: #f8fafc; border: 1px solid #cbd5e1;">
+              <div>
+                <span class="text-muted small d-block">Thời gian: <strong id="stayDurationText" class="text-dark">1 đêm</strong></span>
+                <span class="text-muted small d-block">Ưu đãi: <strong id="discountAmountText" class="text-success">0đ</strong></span>
+              </div>
+              <div class="text-end">
+                <small class="text-secondary d-block fw-bold">TỔNG THANH TOÁN</small>
+                <div class="fs-4 fw-bold text-danger" id="finalPriceDisplay">1.500.000đ</div>
+                <input type="hidden" id="reservePrice">
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-glow-gold py-3 fs-6" id="btnSubmitBooking">
+                <i class="fa-solid fa-circle-check me-2"></i> XÁC NHẬN GIỮ CHỖ (MIỄN PHÍ HỦY 24H)
+              </button>
+              <div class="text-center text-muted small mt-1">
+                <i class="fa-solid fa-shield-halved text-success me-1"></i> Cam kết bảo mật thông tin & Hỗ trợ đổi lịch linh hoạt
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL XUẤT E-TICKET / HÓA ĐƠN XÁC NHẬN VIP ==================== -->
+  <div class="modal fade" id="modalETicket" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+      <div class="modal-content p-4" style="background: #ffffff; border: 2px solid #f59e0b; border-radius: 20px; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);">
+        <div class="text-center pb-3 border-bottom">
+          <div class="d-inline-flex p-3 rounded-circle bg-success-subtle text-success mb-2">
+            <i class="fa-solid fa-circle-check fs-1"></i>
+          </div>
+          <h4 class="fw-bold text-dark mb-0">ĐẶT DỊCH VỤ THÀNH CÔNG!</h4>
+          <span class="badge bg-warning text-dark fw-bold mt-1">E-VOUCHER / XÁC NHẬN VIP</span>
+        </div>
+
+        <div class="modal-body p-0 py-3">
+          <div class="p-3 rounded mb-3" style="background: #f8fafc; border: 1px dashed #cbd5e1;">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-secondary small">Mã tra cứu:</span>
+              <strong class="font-monospace text-primary fs-5" id="ticketCode">#BK-9999</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-secondary small">Khách hàng:</span>
+              <strong class="text-dark" id="ticketName">Đào Trọng Đức Nhân</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-secondary small">Dịch vụ:</span>
+              <strong class="text-danger text-end" id="ticketService" style="max-width: 250px;">Suite Tổng Thống</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-secondary small">Thời gian:</span>
+              <span class="text-primary fw-semibold" id="ticketDate">2026-10-15</span>
+            </div>
+            <div class="d-flex justify-content-between pt-2 border-top">
+              <span class="text-dark fw-bold">Tổng thanh toán:</span>
+              <strong class="text-danger fs-5" id="ticketPrice">1.500.000đ</strong>
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+              <span class="text-secondary small">Hình thức:</span>
+              <span class="badge bg-success" id="ticketPayment">Thanh toán tại quầy</span>
+            </div>
+          </div>
+
+          <div class="text-center p-2 rounded" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+            <p class="small text-muted mb-1"><i class="fa-solid fa-qrcode me-1"></i> Quét mã nhận phòng tại quầy lễ tân:</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=110x110&data=IMPERIAL-HOTELS-CONFIRMED" class="rounded border p-1 bg-white" alt="QR Code">
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 pt-2">
+          <button type="button" class="btn btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">Đóng</button>
+          <button type="button" class="btn btn-warning fw-bold flex-grow-1" onclick="window.print()">
+            <i class="fa-solid fa-print me-1"></i> In Vé / Lưu Ảnh
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ĐÁNH GIÁ & REVIEW TỪ KHÁCH HÀNG THỰC TẾ ==================== -->
+  <section class="py-5" id="reviews" style="background: #f8fafc; border-top: 1px solid #e2e8f0;">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end flex-wrap mb-4">
+        <div>
+          <span class="text-warning fw-bold small text-uppercase"><i class="fa-solid fa-star me-1"></i> Đánh Giá Trực Tuyến</span>
+          <h2 class="display-6 fw-bold text-white mb-0">TRẢI NGHIỆM KHÁCH HÀNG ĐÃ Ở (4.9 / 5.0)</h2>
+        </div>
+        <span class="text-muted small">Dựa trên 1,840+ lượt đánh giá xác thực từ Agoda & Booking</span>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="card-item p-4" style="background: #ffffff;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=60&q=80" class="rounded-circle" width="42" height="42" alt="Avatar">
+                <div>
+                  <h6 class="fw-bold text-white mb-0">Chị Hoàng Linh Chi</h6>
+                  <small class="text-muted">Doanh nhân • Hà Nội</small>
+                </div>
+              </div>
+              <div class="text-warning small"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            </div>
+            <p class="card-desc-text mb-0">"Gia đình mình vừa ở Suite Tổng Thống Đà Nẵng 3 ngày 2 đêm. View biển Mỹ Khê tuyệt đẹp, dịch vụ xe Mercedes đón tận sân bay cực kỳ chuyên nghiệp và chu đáo. Chắc chắn sẽ quay lại!"</p>
+            <div class="mt-3 pt-2 border-top small text-primary fw-semibold"><i class="fa-solid fa-hotel me-1"></i> Ở tại: Suite Tổng Thống Đà Nẵng</div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="card-item p-4" style="background: #ffffff;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=60&q=80" class="rounded-circle" width="42" height="42" alt="Avatar">
+                <div>
+                  <h6 class="fw-bold text-white mb-0">Anh Trần Quốc Huy</h6>
+                  <small class="text-muted">Chuyên gia IT • TP.HCM</small>
+                </div>
+              </div>
+              <div class="text-warning small"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            </div>
+            <p class="card-desc-text mb-0">"Hệ thống website đặt phòng rất mượt mà và trực quan! Mã voucher IMPERIAL-VIP947 trừ thẳng 25% tiền phòng rất thực tế. Thủ tục nhận phòng chỉ mất 1 phút là có thẻ từ."</p>
+            <div class="mt-3 pt-2 border-top small text-primary fw-semibold"><i class="fa-solid fa-hotel me-1"></i> Ở tại: Sunset Pool Villa Đảo Ngọc</div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="card-item p-4" style="background: #ffffff;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=60&q=80" class="rounded-circle" width="42" height="42" alt="Avatar">
+                <div>
+                  <h6 class="fw-bold text-white mb-0">Chị Thu Thảo</h6>
+                  <small class="text-muted">Travel Blogger</small>
+                </div>
+              </div>
+              <div class="text-warning small"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            </div>
+            <p class="card-desc-text mb-0">"Căn biệt thự Pine Hill Đà Lạt săn mây sớm đẹp mê hồn, phòng có sẵn lò sưởi ấm cúng và trà thảo mộc. Dịch vụ đưa đón sân bay Liên Khương rất tiện lợi!"</p>
+            <div class="mt-3 pt-2 border-top small text-primary fw-semibold"><i class="fa-solid fa-hotel me-1"></i> Ở tại: Pine Hill Villa Đà Lạt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NÚT HOTLINE & ZALO VIP NỔI GÓC PHẢI MÀN HÌNH (FLOATING CONTACT) -->
+  <div style="position: fixed; bottom: 25px; right: 25px; z-index: 999; display: flex; flex-direction: column; gap: 12px;">
+    <a href="tel:0988123947" class="btn btn-warning rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 54px; height: 54px; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.6) !important;" title="Gọi Hotline 24/7">
+      <i class="fa-solid fa-phone-volume fs-4 text-dark"></i>
+    </a>
+    <a href="https://zalo.me" target="_blank" class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" style="width: 54px; height: 54px; box-shadow: 0 4px 20px rgba(37, 99, 235, 0.6) !important;" title="Chat Zalo Tư Vấn VIP">
+      <i class="fa-solid fa-comment-dots fs-4 text-white"></i>
+    </a>
+  </div>
+
+  <!-- FOOTER NỀN TRẮNG SÁNG SANG TRỌNG -->
+  <footer class="py-4 text-center border-top mt-5" style="background: #f8fafc; font-size: 0.85rem; color: #475569;">
+    <div class="container">
+      <div class="row text-start py-4 g-4" style="color: #334155;">
+        <div class="col-md-4">
+          <h5 class="text-dark fw-bold"><i class="fa-solid fa-hotel text-warning me-2"></i>IMPERIAL HOTELS</h5>
+          <p class="small">Hệ thống phân tán ứng dụng kiến trúc Microservices và hạ tầng giám sát DevOps hiện đại (Nginx SSL, Node.js, PostgreSQL, Prometheus, Grafana, Loki).</p>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-dark fw-bold">HỆ THỐNG KHÁCH SẠN BA MIỀN</h6>
+          <ul class="list-unstyled small lh-lg">
+            <li>• Miền Bắc: Hà Nội, Hạ Long, Sa Pa, Hải Phòng, Ninh Bình...</li>
+            <li>• Miền Trung: Đà Nẵng, Nha Trang, Đà Lạt, Huế, Hội An...</li>
+            <li>• Miền Nam: TP. Hồ Chí Minh, Phú Quốc, Vũng Tàu, Cần Thơ...</li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="text-dark fw-bold">ĐỒ ÁN PHẦN MỀM ĐỀ TÀI SỐ 06</h6>
+          <p class="small mb-1">Sinh viên thực hiện: <strong class="text-primary">Đào Trọng Đức Nhân</strong></p>
+          <p class="small mb-1">Mã số sinh viên: <strong class="text-danger">DTC245200947</strong></p>
+          <p class="small mb-0">CSDL PostgreSQL • Nginx Proxy • Giám sát Prometheus/Grafana</p>
+        </div>
+      </div>
+      <div class="pt-3 border-top">
+        © 2026 Imperial Luxury Hotels • Nền tảng đặt phòng khách sạn toàn quốc.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Thư viện Bootstrap & Các file JS đã tách riêng -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./data.js?v=2026"></script>
+  <script src="./app.js?v=2026"></script>
+  <script>
+    // Luôn giữ nguyên giao diện 3 Khu vực Đường Bay & Sơ đồ Đường Bay trực quan trong #flightsGridContainer
+    window.renderRegionalFlights = function(regionFilter = 'ALL') {
+      const mapBtn = { 'ALL': 'ALL', 'Miền Bắc': 'BAC', 'Miền Trung': 'TRUNG', 'Miền Nam': 'NAM' };
+      ['ALL', 'BAC', 'TRUNG', 'NAM'].forEach(k => {
+        const b = document.getElementById('btnFlightReg_' + k);
+        if (b) b.classList.remove('active');
+      });
+      const activeBtn = document.getElementById('btnFlightReg_' + (mapBtn[regionFilter] || 'ALL'));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.querySelectorAll('.flight-region-header, .flight-card-item').forEach(el => {
+        const reg = el.getAttribute('data-region');
+        el.style.display = (regionFilter === 'ALL' || reg === regionFilter) ? 'block' : 'none';
+      });
+      if (typeof window.syncAuthPriceVisibility === 'function') {
+        window.syncAuthPriceVisibility();
+      }
+    };
+
+    // Dự phòng tự động nếu Server Docker/Node chưa được khởi động lại sau khi tách file
+    if (typeof window.openLoginModal !== 'function') {
+      window.currentUser = null;
+      window.pendingBookingArgs = null;
+      const bModal = new bootstrap.Modal(document.getElementById('modalBooking'));
+      const lModal = new bootstrap.Modal(document.getElementById('modalAuthLogin'));
+      const rModal = new bootstrap.Modal(document.getElementById('modalAuthRegister'));
+      const tModal = new bootstrap.Modal(document.getElementById('modalETicket'));
+
+      window.syncAuthPriceVisibility = function() {
+        const isLogged = Boolean(window.currentUser);
+        document.body.classList.toggle('auth-locked-mode', !isLogged);
+        const budgetBtn = document.getElementById('filterBudget_ALL');
+        if (budgetBtn && budgetBtn.parentElement) budgetBtn.parentElement.style.display = isLogged ? '' : 'none';
+        document.querySelectorAll('#hotels .fs-5.fw-bold, #flights .fs-5.fw-bold').forEach(el => {
+          const priceBlock = el.parentElement;
+          const actionRow = priceBlock ? priceBlock.parentElement : null;
+          if (priceBlock) priceBlock.style.display = isLogged ? '' : 'none';
+          if (actionRow) {
+            actionRow.classList.toggle('d-none', !isLogged);
+            actionRow.classList.toggle('d-flex', isLogged);
+          }
+        });
+      };
+
+      window.renderDestinationsGrid = function(regionFilter = 'TOP') {
+        const mapBtn = { 'TOP': 'TOP', 'Miền Bắc': 'BAC', 'Miền Trung': 'TRUNG', 'Miền Nam': 'NAM' };
+        ['TOP', 'BAC', 'TRUNG', 'NAM'].forEach(k => {
+          const b = document.getElementById('btnRegion_' + k);
+          if (b) b.classList.remove('active');
+        });
+        const activeBtn = document.getElementById('btnRegion_' + (mapBtn[regionFilter] || 'TOP'));
+        if (activeBtn) activeBtn.classList.add('active');
+        document.querySelectorAll('.dest-card-item').forEach(card => {
+          const reg = card.getAttribute('data-region');
+          card.style.display = (regionFilter === 'TOP' || regionFilter === 'ALL' || reg === regionFilter) ? 'block' : 'none';
+        });
+      };
+
+      window.openLoginModal = () => lModal.show();
+      window.openRegisterModal = () => rModal.show();
+      window.switchAuthModal = (t) => {
+        if (t === 'register') { lModal.hide(); setTimeout(() => rModal.show(), 280); }
+        else { rModal.hide(); setTimeout(() => lModal.show(), 280); }
+      };
+      window.quickFillRole = (role) => {
+        if (role === 'customer') {
+          document.getElementById('authLoginUser').value = 'khachhang@gmail.com';
+          document.getElementById('authLoginPass').value = '123456';
+        } else {
+          document.getElementById('authLoginUser').value = 'admin@imperial.com';
+          document.getElementById('authLoginPass').value = 'admin123';
+        }
+      };
+      window.handleAuthRegister = (e) => {
+        e.preventDefault();
+        const name = document.getElementById('authRegName').value.trim();
+        const contact = document.getElementById('authRegContact').value.trim();
+        const phone = document.getElementById('authRegPhone').value.trim();
+        const pass = document.getElementById('authRegPass').value;
+        const passConfirm = document.getElementById('authRegPassConfirm').value;
+        const errBox = document.getElementById('registerErrorNotice');
+        if (pass !== passConfirm) {
+          errBox.style.display = 'block';
+          errBox.innerText = 'Mật khẩu nhập lại không khớp!';
+          return;
+        }
+        errBox.style.display = 'none';
+        localStorage.setItem('imperial_temp_reg', JSON.stringify({ name, contact, phone, pass }));
+        rModal.hide();
+        setTimeout(() => {
+          document.getElementById('authLoginUser').value = contact;
+          document.getElementById('authLoginPass').value = pass;
+          const banner = document.getElementById('loginRegisteredBanner');
+          if (banner) banner.style.display = 'block';
+          lModal.show();
+        }, 300);
+      };
+      window.handleAuthLogin = (e) => {
+        e.preventDefault();
+        const userVal = document.getElementById('authLoginUser').value.trim();
+        const isAdmin = userVal.toLowerCase().includes('admin');
+        window.currentUser = {
+          name: isAdmin ? 'Admin Đào Trọng Đức Nhân' : (userVal.split('@')[0] || 'Khách hàng VIP'),
+          phone: '0988.123.947',
+          role: isAdmin ? 'admin' : 'customer'
+        };
+        document.getElementById('authSection').classList.replace('d-flex', 'd-none');
+        document.getElementById('userProfileSection').classList.replace('d-none', 'd-flex');
+        document.getElementById('currentUserName').innerText = window.currentUser.name;
+        if (isAdmin) {
+          document.getElementById('navAdminLink').classList.remove('d-none');
+          document.getElementById('booking-manager').style.display = 'block';
+        }
+        window.syncAuthPriceVisibility();
+        lModal.hide();
+        if (window.pendingBookingArgs) {
+          const a = window.pendingBookingArgs;
+          window.pendingBookingArgs = null;
+          setTimeout(() => window.openBookingModal(a[0], a[1], a[2]), 350);
+        }
+      };
+      window.logoutUser = () => {
+        window.currentUser = null;
+        document.getElementById('authSection').classList.replace('d-none', 'd-flex');
+        document.getElementById('userProfileSection').classList.replace('d-flex', 'd-none');
+        document.getElementById('navAdminLink').classList.add('d-none');
+        document.getElementById('booking-manager').style.display = 'none';
+        window.syncAuthPriceVisibility();
+      };
+      window.openBookingModal = (serviceName, locationName, priceNum) => {
+        if (!window.currentUser) {
+          window.pendingBookingArgs = [serviceName, locationName, priceNum];
+          lModal.show();
+          return;
+        }
+        document.getElementById('reserveRoomName').value = `${serviceName} - ${locationName}`;
+        const formatted = new Intl.NumberFormat('vi-VN').format(priceNum) + 'đ';
+        document.getElementById('finalPriceDisplay').innerText = formatted;
+        document.getElementById('reservePrice').value = formatted;
+        bModal.show();
+      };
+      window.submitReservation = (e) => {
+        e.preventDefault();
+        bModal.hide();
+        setTimeout(() => tModal.show(), 350);
+      };
+      window.syncAuthPriceVisibility();
+    }
+  </script>
 </body>
 </html>
